@@ -15,11 +15,17 @@ services:
 
     environment:
       ROTATION_SHARE_API_KEY:   ${ROTATION_SHARE_API_KEY:?missing ROTATION_SHARE_API_KEY}
-      # Admin key gates the /admin UI + /admin/api/* endpoints.  Acts as
-      # the bootstrap superadmin login (always works, never expires) on
-      # top of per-user accounts created via the Users panel.  Operator-
-      # only -- never embedded in any client.
+      # Session-signing secret.  No longer a login credential -- the
+      # admin UI is username/password only.  Rotating this key
+      # invalidates every outstanding session token (HMAC signed with
+      # a key derived from this), which is the emergency-revocation
+      # lever.  Operator-only -- never embedded in any client.
       ROTATION_SHARE_ADMIN_KEY: ${ROTATION_SHARE_ADMIN_KEY:?missing ROTATION_SHARE_ADMIN_KEY}
+      # Optional first-user bootstrap.  If `users` is empty AT STARTUP
+      # and this is set as "username:password[:role]", that row is
+      # created once.  Defaults to role=superadmin.  Subsequent
+      # restarts are no-ops because the table is no longer empty.
+      ROTATION_SHARE_BOOTSTRAP_USER: ${ROTATION_SHARE_BOOTSTRAP_USER:-}
       ROTATION_SHARE_ROOT:      "/data"
       ROTATION_SHARE_WORKERS:   "2"
       # Reject profile bodies larger than this many bytes.  A typical

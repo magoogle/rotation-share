@@ -12,17 +12,22 @@ Auth on those endpoints uses X-API-Key (shared client secret embedded in
 the Lua plugin).  Per-profile edits additionally require a `creator_token`
 returned at create time.
 
-The /admin UI + /admin/api/* endpoints are operator-only.  Auth there is:
+The /admin UI + /admin/api/* endpoints are operator-only and use per-user
+accounts ONLY.  Login at /admin/api/auth/login takes {username, password}
+and returns a signed bearer token that the UI attaches as X-Admin-Session
+on every subsequent admin request.  Roles:
+    superadmin  -- full access incl. user management
+    editor      -- can manage profiles but not users
 
-  * Master admin key (X-Admin-Key header), value = ROTATION_SHARE_ADMIN_KEY
-    env var.  Bootstrap path -- always works, never expires, has the
-    `superadmin` role.
-  * Per-user account (created via the Users panel, stored in the
-    `users` table).  Login at /admin/api/auth/login returns a signed
-    bearer token that the UI then attaches as X-Admin-Session on every
-    admin request.  Roles:
-        superadmin  -- full access incl. user management
-        editor      -- can manage profiles but not users
+ROTATION_SHARE_ADMIN_KEY is still required at startup, but it is NO LONGER
+a login credential -- it is purely the HMAC key used to sign session
+tokens.  Rotating it invalidates every existing token (every admin must
+re-login), which is the intended emergency-revocation path.
+
+Bootstrap: a fresh deploy with an empty `users` table can be seeded by
+setting ROTATION_SHARE_BOOTSTRAP_USER=username:password[:role] in the
+environment.  The user is created on the first startup that finds zero
+users; subsequent restarts no-op.
 
 Profiles can be created / edited from the admin UI (any admin role) in
 addition to the plugin's public CREATE/PATCH path -- admin edits bypass
@@ -68,9 +73,9 @@ _USERNAME_RE = re.compile(r'^[A-Za-z0-9_\-\.]{2,64}$')
 _VALID_ROLES = ('superadmin', 'editor')
 
 # Session token TTL.  7 days is comfortable for an admin panel that
-# people leave open in a browser tab.  Master-key logins reuse the
-# same token mechanism so they expire on the same schedule -- the
-# operator can always log in fresh with the master key again.
+# people leave open in a browser tab.  Rotating ADMIN_KEY is the
+# emergency-revocation lever -- it changes _SESSION_SECRET so every
+# outstanding token stops verifying immediately.
 _SESSION_TTL_S = 7 * 24 * 3600
 
 if not API_KEY:
@@ -199,6 +204,60 @@ _conn.execute('PRAGMA synchronous=NORMAL')
 _conn.executescript(_SCHEMA)
 
 
+# ── Bootstrap the first admin ───────────────────────────────────────────────
+# If the users table is empty AND the operator has set
+# ROTATION_SHARE_BOOTSTRAP_USER=username:password[:role] in the
+# environment, create that user once.  This is the recovery path for
+# fresh deploys + lockout situations -- with the master-key login
+# removed there is no built-in fallback otherwise.  Subsequent restarts
+# are no-ops because the table is no longer empty.
+def _bootstrap_first_user() -> None:
+    spec = (os.environ.get('ROTATION_SHARE_BOOTSTRAP_USER') or '').strip()
+    row = _query_one('SELECT COUNT(*) AS n FROM users')
+    n_users = int(row['n']) if row else 0
+    if n_users > 0:
+        return
+    if not spec:
+        print(
+            '[rotation-share] WARNING: users table is empty and no '
+            'ROTATION_SHARE_BOOTSTRAP_USER is set -- nobody can log in. '
+            'Set ROTATION_SHARE_BOOTSTRAP_USER=user:pass[:role] in .env '
+            'and restart, or insert a row directly into the users table.',
+            flush=True,
+        )
+        return
+    try:
+        parts = spec.split(':')
+        if len(parts) < 2:
+            raise ValueError('expected "username:password[:role]"')
+        u = parts[0].strip()
+        p = parts[1]
+        r = parts[2].strip() if len(parts) > 2 else 'superadmin'
+        if not _USERNAME_RE.match(u):
+            raise ValueError(f'bad username "{u}"')
+        if r not in _VALID_ROLES:
+            raise ValueError(f'bad role "{r}" (must be one of {list(_VALID_ROLES)})')
+        if len(p) < 8:
+            raise ValueError('password must be at least 8 characters')
+        now = time.time()
+        with _write() as c:
+            c.execute(
+                'INSERT INTO users(username, password_hash, role, '
+                '                  created_at, updated_at) '
+                'VALUES (?, ?, ?, ?, ?)',
+                (u, _hash_password(p), r, now, now),
+            )
+        print(
+            f'[rotation-share] bootstrap: created user "{u}" with role "{r}"',
+            flush=True,
+        )
+    except Exception as e:
+        print(f'[rotation-share] bootstrap FAILED: {e}', flush=True)
+
+
+_bootstrap_first_user()
+
+
 @contextmanager
 def _write():
     with _LOCK:
@@ -261,49 +320,30 @@ def _check_code(code: str) -> None:
         raise HTTPException(status_code=400, detail='bad code')
 
 
-def _admin_principal(
-    admin_key: Optional[str],
-    session_token: Optional[str],
-) -> dict:
-    """Resolve the admin caller from EITHER the master admin key OR a
-    signed session token.  Returns a dict shaped like:
-        {'role': 'superadmin'|'editor',
-         'user_id': int|None, 'username': str}
-    Raises 401 when neither auth path passes.
+def _admin_principal(session_token: Optional[str]) -> dict:
+    """Resolve the admin caller from a signed session token.  Returns:
+        {'role': 'superadmin'|'editor', 'user_id': int, 'username': str}
+    Raises 401 when the token is missing/expired/forged or the user has
+    been deleted.
     """
-    # Master admin key short-circuit -- always treated as superadmin.
-    if admin_key and secrets.compare_digest(admin_key.strip(), ADMIN_KEY):
-        return {'role': 'superadmin', 'user_id': None, 'username': '<master>'}
-    # Session token path.
     if session_token:
         claims = _read_session(session_token.strip())
         if claims:
-            kind = claims.get('kind')
             role = claims.get('role')
-            if role in _VALID_ROLES:
-                # Master-key session (issued by /auth/login when the
-                # operator presented ROTATION_SHARE_ADMIN_KEY).  Has no
-                # user row to verify -- the HMAC + exp check from
-                # _read_session is the full validation we get.
-                if kind == 'master':
+            uid  = claims.get('user_id')
+            if role in _VALID_ROLES and isinstance(uid, int):
+                # Re-verify the user row still exists (deleted accounts
+                # whose tokens haven't expired yet) and pull the LIVE
+                # role -- a demotion takes effect on the next request,
+                # not when the token expires.
+                row = _query_one(
+                    'SELECT username, role FROM users WHERE id = ?', (uid,))
+                if row is not None:
                     return {
-                        'role':     role,
-                        'user_id':  None,
-                        'username': str(claims.get('username') or '<master>'),
+                        'role':     str(row['role']),
+                        'user_id':  uid,
+                        'username': str(row['username']),
                     }
-                # Per-user session.  Re-verify the user row still exists
-                # (handles deleted accounts whose tokens haven't expired
-                # yet) and pull the live role in case it changed.
-                uid = claims.get('user_id')
-                if isinstance(uid, int):
-                    row = _query_one(
-                        'SELECT username, role FROM users WHERE id = ?', (uid,))
-                    if row is not None:
-                        return {
-                            'role':     str(row['role']),
-                            'user_id':  uid,
-                            'username': str(row['username']),
-                        }
     raise HTTPException(status_code=401, detail='unauthorized')
 
 
@@ -481,10 +521,8 @@ def admin_ui():
 
 @app.post('/admin/api/auth/login')
 async def admin_auth_login(request: Request):
-    """Unified login.  Accepts:
-        {username, password}   ->  per-user account
-        {admin_key}            ->  master admin key (legacy + bootstrap)
-    Returns: {ok, token, role, username} on success, 401 otherwise.
+    """Per-user login.  Accepts {username, password} and returns a
+    signed bearer token in {ok, token, role, username, user_id}.
     """
     try:
         body = await request.json()
@@ -492,20 +530,6 @@ async def admin_auth_login(request: Request):
         body = {}
     if not isinstance(body, dict):
         body = {}
-
-    admin_key = (body.get('admin_key') or '').strip()
-    if admin_key:
-        if not secrets.compare_digest(admin_key, ADMIN_KEY):
-            return _err('bad admin key', 401)
-        token = _make_session({
-            'kind':     'master',
-            'role':     'superadmin',
-            'user_id':  None,
-            'username': '<master>',
-            'iat':      int(time.time()),
-            'exp':      int(time.time() + _SESSION_TTL_S),
-        })
-        return {'ok': True, 'token': token, 'role': 'superadmin', 'username': '<master>'}
 
     username = (body.get('username') or '').strip()
     password = body.get('password') or ''
@@ -520,7 +544,6 @@ async def admin_auth_login(request: Request):
         return _err('invalid username or password', 401)
 
     token = _make_session({
-        'kind':     'user',
         'role':     str(row['role']),
         'user_id':  int(row['id']),
         'username': str(row['username']),
@@ -528,29 +551,14 @@ async def admin_auth_login(request: Request):
         'exp':      int(time.time() + _SESSION_TTL_S),
     })
     return {'ok': True, 'token': token, 'role': str(row['role']),
-            'username': str(row['username'])}
-
-
-# Legacy endpoint kept so older admin.html (which posted just `admin_key`
-# and did not store a session token) still works during a rolling reload.
-@app.post('/admin/api/login')
-async def admin_login_legacy(request: Request):
-    try:
-        body = await request.json()
-    except Exception:
-        body = {}
-    presented = (body.get('admin_key') or '').strip() if isinstance(body, dict) else ''
-    if not presented or not secrets.compare_digest(presented, ADMIN_KEY):
-        return _err('bad admin key', 401)
-    return {'ok': True}
+            'username': str(row['username']), 'user_id': int(row['id'])}
 
 
 @app.get('/admin/api/me')
 def admin_me(
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
-    p = _admin_principal(x_admin_key, x_admin_session)
+    p = _admin_principal(x_admin_session)
     return {'ok': True, 'role': p['role'], 'username': p['username'],
             'user_id': p['user_id']}
 
@@ -559,10 +567,9 @@ def admin_me(
 
 @app.get('/admin/api/profiles')
 def admin_list_profiles(
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
-    _admin_principal(x_admin_key, x_admin_session)
+    _admin_principal(x_admin_session)
     rows = _query("""
         SELECT code, class, name, LENGTH(data) AS bytes,
                created_at, updated_at
@@ -585,10 +592,9 @@ def admin_list_profiles(
 @app.get('/admin/api/profiles/{code}')
 def admin_get_profile(
     code: str,
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
-    _admin_principal(x_admin_key, x_admin_session)
+    _admin_principal(x_admin_session)
     _check_code(code)
     row = _query_one("""
         SELECT code, class, name, data, creator_token,
@@ -612,14 +618,13 @@ def admin_get_profile(
 @app.post('/admin/api/profiles')
 async def admin_create_profile(
     request: Request,
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
     """Admin-authored profile create.  Bypasses the public client's
     X-API-Key check (admin auth implies ability) but otherwise produces
     the same row shape, so the plugin can fetch it via the normal
     public GET path with just the share code."""
-    _admin_principal(x_admin_key, x_admin_session)
+    _admin_principal(x_admin_session)
 
     raw = await request.body()
     if len(raw) > MAX_BYTES:
@@ -671,12 +676,11 @@ async def admin_create_profile(
 async def admin_update_profile(
     code: str,
     request: Request,
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
     """Admin-side edit.  Updates any combination of class/name/data
     without requiring the creator_token (admin auth implies ability)."""
-    _admin_principal(x_admin_key, x_admin_session)
+    _admin_principal(x_admin_session)
     _check_code(code)
 
     raw = await request.body()
@@ -733,10 +737,9 @@ async def admin_update_profile(
 @app.delete('/admin/api/profiles/{code}')
 def admin_delete_profile(
     code: str,
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
-    _admin_principal(x_admin_key, x_admin_session)
+    _admin_principal(x_admin_session)
     _check_code(code)
     with _write() as c:
         c.execute('DELETE FROM profiles WHERE code = ?', (code,))
@@ -749,13 +752,12 @@ def admin_delete_profile(
 @app.post('/admin/api/bulk-delete')
 async def admin_bulk_delete(
     request: Request,
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
     """Delete by explicit code list, by class, or by 'older than N days'.
     All three filters can be combined; at least one must be supplied to
     avoid a stray click wiping the table."""
-    _admin_principal(x_admin_key, x_admin_session)
+    _admin_principal(x_admin_session)
     try:
         body = await request.json()
     except Exception:
@@ -808,10 +810,9 @@ async def admin_bulk_delete(
 
 @app.get('/admin/api/users')
 def admin_list_users(
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
-    p = _admin_principal(x_admin_key, x_admin_session)
+    p = _admin_principal(x_admin_session)
     _require_role(p, 'superadmin')
     rows = _query("""
         SELECT id, username, role, created_at, updated_at
@@ -833,10 +834,9 @@ def admin_list_users(
 @app.post('/admin/api/users')
 async def admin_create_user(
     request: Request,
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
-    p = _admin_principal(x_admin_key, x_admin_session)
+    p = _admin_principal(x_admin_session)
     _require_role(p, 'superadmin')
 
     try:
@@ -876,10 +876,9 @@ async def admin_create_user(
 async def admin_update_user(
     user_id: int,
     request: Request,
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
-    p = _admin_principal(x_admin_key, x_admin_session)
+    p = _admin_principal(x_admin_session)
     _require_role(p, 'superadmin')
 
     try:
@@ -906,9 +905,9 @@ async def admin_update_user(
             return _err(f'role must be one of {list(_VALID_ROLES)}')
         # Refuse to leave the system with zero superadmins.  We allow
         # demoting a superadmin to editor only if at least one other
-        # superadmin exists in the users table.  (Master admin key
-        # always remains, so this check is a soft guard against the
-        # operator nuking their own escape hatch.)
+        # superadmin exists in the users table -- with the master-key
+        # login removed there is no other escape hatch from a
+        # zero-superadmin state short of editing the DB by hand.
         if str(row['role']) == 'superadmin' and role != 'superadmin':
             cnt = _query_one(
                 "SELECT COUNT(*) AS n FROM users WHERE role = 'superadmin' AND id != ?",
@@ -935,15 +934,13 @@ async def admin_update_user(
 @app.delete('/admin/api/users/{user_id}')
 def admin_delete_user(
     user_id: int,
-    x_admin_key:     Optional[str] = Header(default=None, alias='X-Admin-Key'),
     x_admin_session: Optional[str] = Header(default=None, alias='X-Admin-Session'),
 ):
-    p = _admin_principal(x_admin_key, x_admin_session)
+    p = _admin_principal(x_admin_session)
     _require_role(p, 'superadmin')
 
-    # Prevent self-delete via the user account path (master key path
-    # has user_id=None so this check naturally lets them delete any
-    # user, including themselves if logged in as a stored user).
+    # Prevent the operator from deleting the user they're logged in as
+    # -- the post-delete next request would 401 with no session left.
     if p['user_id'] == user_id:
         return _err('cannot delete the user you are logged in as', 400)
 

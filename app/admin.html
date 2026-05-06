@@ -260,23 +260,12 @@
 <div id="login">
   <div class="card">
     <h1>rotation-share admin</h1>
-    <p>Sign in to manage profiles and users.</p>
-    <div class="tabs">
-      <div class="tab active" data-tab="user">User account</div>
-      <div class="tab" data-tab="master">Master key</div>
-    </div>
-
-    <form id="loginUserForm" data-tab="user">
+    <p>Sign in with your username and password.</p>
+    <form id="loginUserForm">
       <input id="loginUsername" type="text" autocomplete="username" placeholder="username" autofocus>
       <input id="loginPassword" type="password" autocomplete="current-password" placeholder="password">
       <button class="primary" type="submit">Sign in</button>
     </form>
-
-    <form id="loginMasterForm" data-tab="master" style="display:none">
-      <input id="loginMasterKey" type="password" autocomplete="off" placeholder="X-Admin-Key">
-      <button class="primary" type="submit">Sign in</button>
-    </form>
-
     <div id="loginErr" class="err" style="margin-top:10px"></div>
   </div>
 </div>
@@ -461,7 +450,6 @@ function showLogin(msg) {
   $('loginErr').textContent = msg || '';
   $('loginUsername').value  = '';
   $('loginPassword').value  = '';
-  $('loginMasterKey').value = '';
   setTimeout(() => $('loginUsername').focus(), 0);
 }
 function showApp() {
@@ -484,35 +472,23 @@ function logout() {
   showLogin();
 }
 
-// Login tab switching
-document.querySelectorAll('#login .tab').forEach(t => {
-  t.addEventListener('click', () => {
-    document.querySelectorAll('#login .tab').forEach(x => x.classList.remove('active'));
-    t.classList.add('active');
-    const tab = t.dataset.tab;
-    document.querySelectorAll('#login form').forEach(f => {
-      f.style.display = (f.dataset.tab === tab) ? 'flex' : 'none';
-    });
-    $('loginErr').textContent = '';
-    setTimeout(() => {
-      if (tab === 'user')   $('loginUsername').focus();
-      else                  $('loginMasterKey').focus();
-    }, 0);
-  });
-});
-
-async function doLogin(payload) {
+async function doLogin(username, password) {
   const r = await fetch('/admin/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ username, password }),
   });
   let body = null;
   try { body = await r.json(); } catch (_) {}
   if (!r.ok || !body || !body.ok) {
     throw new Error((body && (body.error || body.detail)) || ('http ' + r.status));
   }
-  session = { token: body.token, role: body.role, username: body.username };
+  session = {
+    token:    body.token,
+    role:     body.role,
+    username: body.username,
+    user_id:  body.user_id,
+  };
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 }
 
@@ -523,19 +499,7 @@ $('loginUserForm').addEventListener('submit', async (e) => {
   if (!username || !password) return;
   $('loginErr').textContent = '';
   try {
-    await doLogin({ username, password });
-    showApp();
-  } catch (err) {
-    $('loginErr').textContent = err.message || 'login failed';
-  }
-});
-$('loginMasterForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const admin_key = $('loginMasterKey').value.trim();
-  if (!admin_key) return;
-  $('loginErr').textContent = '';
-  try {
-    await doLogin({ admin_key });
+    await doLogin(username, password);
     showApp();
   } catch (err) {
     $('loginErr').textContent = err.message || 'login failed';

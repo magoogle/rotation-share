@@ -31,18 +31,34 @@ container at `https://share.d4data.live`.
 
 ### Admin UI / API
 
-UI at **`/admin`**.  Two auth paths:
+UI at **`/admin`**.  Username + password only.  Login at
+`/admin/api/auth/login` with `{username, password}` returns a signed bearer
+token; the UI attaches it as `X-Admin-Session` on every request.  Roles:
 
-1. **Master admin key** — `ROTATION_SHARE_ADMIN_KEY` env var.  Always works,
-   never expires, has the `superadmin` role.  This is the bootstrap login.
-2. **Per-user account** — created in the Users panel.  Login at
-   `/admin/api/auth/login` returns a signed bearer token; the UI attaches it
-   as `X-Admin-Session` on every request.  Roles:
-   - `superadmin` — full access including user management
-   - `editor`     — manage profiles only
+- `superadmin` — full access including user management
+- `editor`     — manage profiles only
+
+`ROTATION_SHARE_ADMIN_KEY` is still required at startup but is **no longer a
+login credential** — it derives the HMAC key that signs session tokens.
+Rotating it instantly invalidates every outstanding token (every admin must
+re-login).  That's the emergency-revocation lever.
 
 Profiles can be **created** and **edited** in-browser (any admin role).
 JSON validation runs server-side before save.
+
+#### Bootstrapping the first user
+
+A fresh deploy with an empty `users` table is a locked-out state.  Set:
+
+```
+ROTATION_SHARE_BOOTSTRAP_USER=username:password[:role]
+```
+
+in `.env` and start the container.  If `users` is empty, the row is created
+once.  Subsequent restarts are no-ops.  Defaults to `role=superadmin`.
+
+If you ever lose access without a working account, SSH to the host, edit
+`/opt/rotation-share/.env`, add the env var, and `docker compose up -d`.
 
 ## Local quickstart
 
