@@ -278,10 +278,22 @@ def _admin_principal(
     if session_token:
         claims = _read_session(session_token.strip())
         if claims:
+            kind = claims.get('kind')
             role = claims.get('role')
             if role in _VALID_ROLES:
-                # Verify the user still exists (handles deleted accounts
-                # whose tokens haven't expired yet).
+                # Master-key session (issued by /auth/login when the
+                # operator presented ROTATION_SHARE_ADMIN_KEY).  Has no
+                # user row to verify -- the HMAC + exp check from
+                # _read_session is the full validation we get.
+                if kind == 'master':
+                    return {
+                        'role':     role,
+                        'user_id':  None,
+                        'username': str(claims.get('username') or '<master>'),
+                    }
+                # Per-user session.  Re-verify the user row still exists
+                # (handles deleted accounts whose tokens haven't expired
+                # yet) and pull the live role in case it changed.
                 uid = claims.get('user_id')
                 if isinstance(uid, int):
                     row = _query_one(
