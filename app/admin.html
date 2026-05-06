@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>rotation-share admin</title>
+<style>
+  :root {
+    --bg:        #0e1116;
+    --panel:    #151a22;
+    --panel2:   #1c232d;
+    --border:   #262e3a;
+    --text:     #d6dde7;
+    --muted:    #8a93a3;
+    --accent:   #4f8cf3;
+    --danger:   #e25555;
+    --danger-h: #f06464;
+    --ok:       #3fb27f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body {
+    font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+  }
+  a { color: var(--accent); }
+  button {
+    font: inherit; cursor: pointer;
+    background: var(--panel2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 6px 10px;
+  }
+  button:hover { border-color: #3a4658; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.primary:hover { background: #3f7ce0; border-color: #3f7ce0; }
+  button.danger  { background: var(--danger);  border-color: var(--danger);  color: #fff; }
+  button.danger:hover { background: var(--danger-h); border-color: var(--danger-h); }
+  button:disabled { opacity: .4; cursor: not-allowed; }
+  input, select, textarea {
+    font: inherit;
+    background: var(--panel2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 6px 10px;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--accent);
+  }
+
+  /* ── Login ───────────────────────────────────────────────────────── */
+  #login {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg);
+  }
+  #login .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px 28px;
+    width: 380px;
+  }
+  #login h1 { margin: 0 0 4px; font-size: 18px; }
+  #login p  { margin: 0 0 16px; color: var(--muted); font-size: 13px; }
+  #login .tabs {
+    display: flex; gap: 4px; margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  #login .tab {
+    padding: 8px 12px; cursor: pointer;
+    color: var(--muted); font-size: 13px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  #login .tab.active {
+    color: var(--text); border-bottom-color: var(--accent);
+  }
+  #login form { display: flex; flex-direction: column; gap: 10px; }
+  #login form input { font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; }
+  #login .err { color: var(--danger); font-size: 12px; min-height: 14px; }
+
+  /* ── App shell ───────────────────────────────────────────────────── */
+  #app { display: none; height: 100%; }
+  header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 { margin: 0; font-size: 15px; font-weight: 600; }
+  header .stats { color: var(--muted); font-size: 12px; }
+  header .who   { color: var(--muted); font-size: 12px; }
+  header .who b { color: var(--text); }
+  header .role-pill {
+    font-size: 11px;
+    padding: 2px 6px; border-radius: 10px;
+    background: var(--panel2); border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  header .role-pill.superadmin { color: #ffce63; border-color: #6b5926; }
+  header .role-pill.editor     { color: var(--accent); border-color: #2c4a7a; }
+  header .spacer { flex: 1; }
+
+  .nav-tabs {
+    display: flex; gap: 0;
+    padding: 0 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-tab {
+    padding: 8px 14px; cursor: pointer;
+    color: var(--muted); font-size: 13px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .nav-tab.active {
+    color: var(--text); border-bottom-color: var(--accent);
+  }
+  .nav-tab.hidden { display: none; }
+
+  .toolbar {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 10px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  .toolbar .group { display: flex; gap: 6px; align-items: center; }
+  .toolbar .group label { color: var(--muted); font-size: 12px; }
+
+  /* ── Table ───────────────────────────────────────────────────────── */
+  .table-wrap { overflow: auto; max-height: calc(100vh - 150px); }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    position: sticky; top: 0;
+    background: var(--panel);
+    color: var(--muted);
+    text-align: left;
+    font-weight: 600; font-size: 12px;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  thead th.sortable { cursor: pointer; user-select: none; }
+  thead th.sortable:hover { color: var(--text); }
+  thead th .arrow { color: var(--accent); margin-left: 4px; }
+  tbody td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #1c2330;
+    vertical-align: middle;
+  }
+  tbody tr:hover { background: #11161e; }
+  td.code  { font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; }
+  td.bytes { text-align: right; color: var(--muted); white-space: nowrap; }
+  td.time  { color: var(--muted); white-space: nowrap; }
+  td.actions { white-space: nowrap; }
+  td.actions button { padding: 4px 8px; font-size: 12px; }
+  .empty { padding: 32px; text-align: center; color: var(--muted); }
+
+  /* ── Drawer (profile detail / editor) ────────────────────────────── */
+  #drawer {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100vw);
+    background: var(--panel);
+    border-left: 1px solid var(--border);
+    transform: translateX(100%); transition: transform .15s ease-out;
+    display: flex; flex-direction: column;
+    z-index: 10;
+  }
+  #drawer.open { transform: translateX(0); }
+  #drawer header {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+  }
+  #drawer h2 { margin: 0; font-size: 14px; font-weight: 600; }
+  #drawer .meta {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px; color: var(--muted);
+    display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px;
+  }
+  #drawer .meta b { color: var(--text); font-weight: 600; }
+  #drawer .editor-fields {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: max-content 1fr; gap: 8px 12px;
+    align-items: center;
+  }
+  #drawer .editor-fields label {
+    color: var(--muted); font-size: 12px; font-weight: 600;
+  }
+  #drawer .editor-fields input { width: 100%; }
+  #drawer .data-wrap {
+    flex: 1; display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  #drawer .data-wrap .data-toolbar {
+    padding: 8px 16px;
+    display: flex; gap: 8px; align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel2);
+  }
+  #drawer .data-wrap .data-toolbar .label {
+    color: var(--muted); font-size: 12px;
+  }
+  #drawer .data-wrap .data-toolbar .ok  { color: var(--ok); font-size: 12px; }
+  #drawer .data-wrap .data-toolbar .err { color: var(--danger); font-size: 12px; }
+  #drawer textarea#dDataEdit {
+    flex: 1; resize: none;
+    margin: 0; padding: 12px 16px;
+    font: 12px/1.5 ui-monospace, "SFMono-Regular", Consolas, monospace;
+    background: var(--bg); color: var(--text);
+    border: none; border-radius: 0;
+  }
+  #drawer textarea#dDataEdit:focus { outline: none; }
+  #drawer .footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--panel);
+    display: flex; gap: 8px;
+    justify-content: flex-end;
+  }
+
+  /* ── Toasts ──────────────────────────────────────────────────────── */
+  #toasts {
+    position: fixed; right: 16px; bottom: 16px;
+    display: flex; flex-direction: column; gap: 8px; z-index: 50;
+  }
+  .toast {
+    background: var(--panel2); border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 12px; font-size: 13px; min-width: 220px;
+  }
+  .toast.ok    { border-color: var(--ok); }
+  .toast.err   { border-color: var(--danger); }
+
+  /* ── Users panel ─────────────────────────────────────────────────── */
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .users-wrap { padding: 16px; max-width: 900px; }
+  .users-wrap .row {
+    display: flex; gap: 12px; align-items: center;
+    padding: 10px; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  .users-wrap .row .uname { font-weight: 600; }
+  .users-wrap .row .uactions { margin-left: auto; display: flex; gap: 6px; }
+  .users-wrap .new-form {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 6px; padding: 14px;
+    margin-bottom: 16px;
+    display: grid; grid-template-columns: 1fr 1fr 140px max-content; gap: 8px;
+  }
+  .users-wrap .new-form input, .users-wrap .new-form select { width: 100%; }
+  .users-wrap h3 { margin: 0 0 8px; font-size: 13px; color: var(--muted); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- ─── Login ─────────────────────────────────────────────────────────── -->
+<div id="login">
+  <div class="card">
+    <h1>rotation-share admin</h1>
+    <p>Sign in to manage profiles and users.</p>
+    <div class="tabs">
+      <div class="tab active" data-tab="user">User account</div>
+      <div class="tab" data-tab="master">Master key</div>
+    </div>
+
+    <form id="loginUserForm" data-tab="user">
+      <input id="loginUsername" type="text" autocomplete="username" placeholder="username" autofocus>
+      <input id="loginPassword" type="password" autocomplete="current-password" placeholder="password">
+      <button class="primary" type="submit">Sign in</button>
+    </form>
+
+    <form id="loginMasterForm" data-tab="master" style="display:none">
+      <input id="loginMasterKey" type="password" autocomplete="off" placeholder="X-Admin-Key">
+      <button class="primary" type="submit">Sign in</button>
+    </form>
+
+    <div id="loginErr" class="err" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- ─── App shell ─────────────────────────────────────────────────────── -->
+<div id="app">
+  <header>
+    <h1>rotation-share</h1>
+    <span id="stats" class="stats">loading…</span>
+    <span class="spacer"></span>
+    <span class="who"><b id="whoUser">—</b></span>
+    <span id="whoRole" class="role-pill">—</span>
+    <button id="refreshBtn">Refresh</button>
+    <button id="logoutBtn">Sign out</button>
+  </header>
+
+  <div class="nav-tabs">
+    <div class="nav-tab active" data-panel="profiles">Profiles</div>
+    <div class="nav-tab hidden" data-panel="users" id="usersTabBtn">Users</div>
+  </div>
+
+  <!-- ─── Profiles panel ───────────────────────────────────────────── -->
+  <div id="panelProfiles" class="panel active">
+    <div class="toolbar">
+      <div class="group">
+        <input id="search" placeholder="search code or name…" style="width: 240px">
+      </div>
+      <div class="group">
+        <label for="classFilter">class</label>
+        <select id="classFilter"><option value="">all</option></select>
+      </div>
+      <span class="spacer" style="flex:1"></span>
+      <div class="group">
+        <button id="newProfileBtn" class="primary">+ New profile</button>
+      </div>
+      <div class="group">
+        <label for="olderDays">older than</label>
+        <input id="olderDays" type="number" min="0" step="1" value="30" style="width: 70px">
+        <span style="color:var(--muted);font-size:12px">days</span>
+        <button id="cleanupBtn" class="danger">Cleanup</button>
+      </div>
+      <div class="group">
+        <button id="bulkDeleteBtn" class="danger" disabled>Delete selected</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 28px"><input id="selAll" type="checkbox"></th>
+            <th class="sortable" data-sort="code">code <span class="arrow"></span></th>
+            <th class="sortable" data-sort="class">class <span class="arrow"></span></th>
+            <th class="sortable" data-sort="name">name <span class="arrow"></span></th>
+            <th class="sortable" data-sort="bytes" style="text-align:right">size <span class="arrow"></span></th>
+            <th class="sortable" data-sort="created_at">created <span class="arrow"></span></th>
+            <th class="sortable" data-sort="updated_at">updated <span class="arrow"></span></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div id="empty" class="empty" style="display:none">No profiles match.</div>
+    </div>
+  </div>
+
+  <!-- ─── Users panel ──────────────────────────────────────────────── -->
+  <div id="panelUsers" class="panel">
+    <div class="users-wrap">
+      <h3>New user</h3>
+      <div class="new-form">
+        <input id="newUserName" placeholder="username">
+        <input id="newUserPass" type="password" placeholder="password (8+ chars)">
+        <select id="newUserRole">
+          <option value="editor">editor</option>
+          <option value="superadmin">superadmin</option>
+        </select>
+        <button id="newUserBtn" class="primary">Create</button>
+      </div>
+      <h3 id="usersHeader">Users</h3>
+      <div id="usersRows"></div>
+      <div id="usersEmpty" class="empty" style="display:none">No users yet — create one above.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Drawer (profile detail / editor) ──────────────────────────────── -->
+<div id="drawer">
+  <header>
+    <h2 id="dTitle">profile</h2>
+    <span class="spacer" style="flex:1"></span>
+    <button id="dCopyData" title="Copy raw JSON">Copy JSON</button>
+    <button id="dClose">Close</button>
+  </header>
+
+  <div class="meta" id="dMeta"></div>
+
+  <div class="editor-fields">
+    <label for="dClassEdit">class</label>
+    <input id="dClassEdit" placeholder="sorcerer / barbarian / …">
+    <label for="dNameEdit">name</label>
+    <input id="dNameEdit" placeholder="display name">
+  </div>
+
+  <div class="data-wrap">
+    <div class="data-toolbar">
+      <span class="label">data (JSON)</span>
+      <span class="spacer" style="flex:1"></span>
+      <span id="dValid" class="ok">valid JSON</span>
+      <button id="dFormat">Format</button>
+    </div>
+    <textarea id="dDataEdit" spellcheck="false" wrap="off"></textarea>
+  </div>
+
+  <div class="footer">
+    <button id="dDelete" class="danger" style="margin-right:auto">Delete</button>
+    <button id="dCancel">Cancel</button>
+    <button id="dSave" class="primary">Save</button>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+'use strict';
+
+const SESSION_KEY = 'rotation-share-admin-session-v2';
+let session = null;       // { token, role, username }
+try {
+  const raw = localStorage.getItem(SESSION_KEY);
+  if (raw) session = JSON.parse(raw);
+} catch (_) { session = null; }
+
+let allProfiles = [];
+let allUsers    = [];
+let sortKey     = 'updated_at';
+let sortDir     = -1;
+let activePanel = 'profiles';
+
+// Drawer mode + state
+let drawerMode = 'view';   // 'view-edit' for existing, 'create' for new
+let drawerCode = null;     // code of profile being edited (null in create mode)
+
+const $ = (id) => document.getElementById(id);
+
+// ─── Toasts ────────────────────────────────────────────────────────────
+function toast(msg, kind = 'ok') {
+  const el = document.createElement('div');
+  el.className = 'toast ' + kind;
+  el.textContent = msg;
+  $('toasts').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ─── HTTP wrapper ──────────────────────────────────────────────────────
+async function api(path, opts = {}) {
+  const headers = Object.assign({}, opts.headers || {});
+  if (session && session.token) {
+    headers['X-Admin-Session'] = session.token;
+  }
+  if (opts.body && typeof opts.body !== 'string') {
+    headers['Content-Type'] = 'application/json';
+    opts.body = JSON.stringify(opts.body);
+  }
+  const r = await fetch(path, { ...opts, headers });
+  if (r.status === 401) {
+    logout();
+    throw new Error('unauthorized');
+  }
+  let body = null;
+  try { body = await r.json(); } catch (_) {}
+  if (!r.ok) {
+    throw new Error((body && (body.detail || body.error)) || ('http ' + r.status));
+  }
+  return body;
+}
+
+// ─── Login flow ────────────────────────────────────────────────────────
+function showLogin(msg) {
+  $('login').style.display = 'flex';
+  $('app').style.display   = 'none';
+  $('loginErr').textContent = msg || '';
+  $('loginUsername').value  = '';
+  $('loginPassword').value  = '';
+  $('loginMasterKey').value = '';
+  setTimeout(() => $('loginUsername').focus(), 0);
+}
+function showApp() {
+  $('login').style.display = 'none';
+  $('app').style.display   = 'block';
+  // Fill the user / role indicator + show Users tab if superadmin.
+  $('whoUser').textContent = session.username;
+  const pill = $('whoRole');
+  pill.textContent = session.role;
+  pill.className   = 'role-pill ' + session.role;
+  $('usersTabBtn').classList.toggle('hidden', session.role !== 'superadmin');
+  if (activePanel === 'users' && session.role !== 'superadmin') {
+    showPanel('profiles');
+  }
+  refresh();
+}
+function logout() {
+  session = null;
+  localStorage.removeItem(SESSION_KEY);
+  showLogin();
+}
+
+// Login tab switching
+document.querySelectorAll('#login .tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('#login .tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const tab = t.dataset.tab;
+    document.querySelectorAll('#login form').forEach(f => {
+      f.style.display = (f.dataset.tab === tab) ? 'flex' : 'none';
+    });
+    $('loginErr').textContent = '';
+    setTimeout(() => {
+      if (tab === 'user')   $('loginUsername').focus();
+      else                  $('loginMasterKey').focus();
+    }, 0);
+  });
+});
+
+async function doLogin(payload) {
+  const r = await fetch('/admin/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  let body = null;
+  try { body = await r.json(); } catch (_) {}
+  if (!r.ok || !body || !body.ok) {
+    throw new Error((body && (body.error || body.detail)) || ('http ' + r.status));
+  }
+  session = { token: body.token, role: body.role, username: body.username };
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+}
+
+$('loginUserForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const username = $('loginUsername').value.trim();
+  const password = $('loginPassword').value;
+  if (!username || !password) return;
+  $('loginErr').textContent = '';
+  try {
+    await doLogin({ username, password });
+    showApp();
+  } catch (err) {
+    $('loginErr').textContent = err.message || 'login failed';
+  }
+});
+$('loginMasterForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const admin_key = $('loginMasterKey').value.trim();
+  if (!admin_key) return;
+  $('loginErr').textContent = '';
+  try {
+    await doLogin({ admin_key });
+    showApp();
+  } catch (err) {
+    $('loginErr').textContent = err.message || 'login failed';
+  }
+});
+
+$('logoutBtn').addEventListener('click', logout);
+
+// ─── Tabs ──────────────────────────────────────────────────────────────
+function showPanel(name) {
+  activePanel = name;
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.panel === name);
+  });
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  $('panel' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+  if (name === 'users') refreshUsers();
+}
+document.querySelectorAll('.nav-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    if (t.classList.contains('hidden')) return;
+    showPanel(t.dataset.panel);
+  });
+});
+
+// ─── Formatting ────────────────────────────────────────────────────────
+function fmtBytes(n) {
+  if (n < 1024) return n + ' B';
+  if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+  return (n / 1024 / 1024).toFixed(2) + ' MB';
+}
+function fmtTime(t) {
+  if (!t) return '';
+  const d  = new Date(t * 1000);
+  const dt = Date.now() / 1000 - t;
+  if (dt < 60)         return Math.round(dt) + 's ago';
+  if (dt < 3600)       return Math.round(dt / 60) + 'm ago';
+  if (dt < 86400)      return Math.round(dt / 3600) + 'h ago';
+  if (dt < 86400 * 7)  return Math.round(dt / 86400) + 'd ago';
+  return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+}
+
+// ─── Profiles: render + filter + sort ──────────────────────────────────
+function applyFilters(list) {
+  const q   = $('search').value.trim().toLowerCase();
+  const cls = $('classFilter').value;
+  return list.filter(p => {
+    if (cls && p.class !== cls) return false;
+    if (q) {
+      const hay = (p.code + ' ' + p.name).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+function sortList(list) {
+  return list.slice().sort((a, b) => {
+    let av = a[sortKey], bv = b[sortKey];
+    if (typeof av === 'string') av = av.toLowerCase();
+    if (typeof bv === 'string') bv = bv.toLowerCase();
+    if (av < bv) return -1 * sortDir;
+    if (av > bv) return  1 * sortDir;
+    return 0;
+  });
+}
+function renderProfiles() {
+  const filtered = sortList(applyFilters(allProfiles));
+  const rowsEl   = $('rows');
+  rowsEl.innerHTML = '';
+  filtered.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.dataset.code = p.code;
+    tr.innerHTML = `
+      <td><input type="checkbox" class="sel" data-code="${escapeHtml(p.code)}"></td>
+      <td class="code">${escapeHtml(p.code)}</td>
+      <td>${escapeHtml(p.class)}</td>
+      <td>${escapeHtml(p.name)}</td>
+      <td class="bytes">${fmtBytes(p.bytes)}</td>
+      <td class="time" title="${new Date(p.created_at*1000).toISOString()}">${fmtTime(p.created_at)}</td>
+      <td class="time" title="${new Date(p.updated_at*1000).toISOString()}">${fmtTime(p.updated_at)}</td>
+      <td class="actions">
+        <button data-act="edit"   data-code="${escapeHtml(p.code)}">Edit</button>
+        <button class="danger" data-act="delete" data-code="${escapeHtml(p.code)}">Delete</button>
+      </td>
+    `;
+    rowsEl.appendChild(tr);
+  });
+  $('empty').style.display = filtered.length === 0 ? 'block' : 'none';
+
+  document.querySelectorAll('th.sortable').forEach(th => {
+    const arrow = th.querySelector('.arrow');
+    arrow.textContent = (th.dataset.sort === sortKey) ? (sortDir < 0 ? '↓' : '↑') : '';
+  });
+
+  updateBulkBtn();
+}
+function renderStats() {
+  const total = allProfiles.length;
+  const bytes = allProfiles.reduce((s, p) => s + p.bytes, 0);
+  const cls   = new Set(allProfiles.map(p => p.class));
+  $('stats').textContent =
+    `${total} profile${total === 1 ? '' : 's'} · ${cls.size} class${cls.size === 1 ? '' : 'es'} · ${fmtBytes(bytes)}`;
+}
+function rebuildClassFilter() {
+  const sel  = $('classFilter');
+  const prev = sel.value;
+  const cls  = [...new Set(allProfiles.map(p => p.class))].sort();
+  sel.innerHTML = '<option value="">all</option>' +
+    cls.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+  if (cls.includes(prev)) sel.value = prev;
+}
+
+// ─── Refresh ────────────────────────────────────────────────────────────
+async function refresh() {
+  try {
+    allProfiles = await api('/admin/api/profiles');
+    rebuildClassFilter();
+    renderStats();
+    renderProfiles();
+  } catch (e) {
+    if (e.message !== 'unauthorized') {
+      toast('Refresh failed: ' + e.message, 'err');
+    }
+  }
+}
+
+$('refreshBtn').addEventListener('click', refresh);
+$('search').addEventListener('input', renderProfiles);
+$('classFilter').addEventListener('change', renderProfiles);
+
+// ─── Sorting ────────────────────────────────────────────────────────────
+document.querySelectorAll('th.sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    if (sortKey === k) {
+      sortDir = -sortDir;
+    } else {
+      sortKey = k;
+      sortDir = (k === 'created_at' || k === 'updated_at' || k === 'bytes') ? -1 : 1;
+    }
+    renderProfiles();
+  });
+});
+
+// ─── Selection / bulk delete ────────────────────────────────────────────
+function selectedCodes() {
+  return [...document.querySelectorAll('input.sel:checked')].map(el => el.dataset.code);
+}
+function updateBulkBtn() {
+  const n = selectedCodes().length;
+  const btn = $('bulkDeleteBtn');
+  btn.disabled = (n === 0);
+  btn.textContent = n > 0 ? `Delete selected (${n})` : 'Delete selected';
+}
+$('rows').addEventListener('change', (e) => {
+  if (e.target.classList.contains('sel')) updateBulkBtn();
+});
+$('selAll').addEventListener('change', (e) => {
+  document.querySelectorAll('input.sel').forEach(el => el.checked = e.target.checked);
+  updateBulkBtn();
+});
+$('bulkDeleteBtn').addEventListener('click', async () => {
+  const codes = selectedCodes();
+  if (codes.length === 0) return;
+  if (!confirm(`Delete ${codes.length} profile(s)? This cannot be undone.`)) return;
+  try {
+    const r = await api('/admin/api/bulk-delete', { method: 'POST', body: { codes } });
+    toast(`Deleted ${r.deleted} profile(s).`, 'ok');
+    $('selAll').checked = false;
+    refresh();
+  } catch (e) {
+    toast('Bulk delete failed: ' + e.message, 'err');
+  }
+});
+$('cleanupBtn').addEventListener('click', async () => {
+  const days = parseInt($('olderDays').value, 10);
+  if (!isFinite(days) || days < 0) { toast('Enter a valid day count.', 'err'); return; }
+  const cls   = $('classFilter').value;
+  const scope = cls ? `class "${cls}"` : 'all classes';
+  if (!confirm(`Delete every profile in ${scope} not updated in the last ${days} day(s)?`)) return;
+  const body = { older_than_days: days };
+  if (cls) body['class'] = cls;
+  try {
+    const r = await api('/admin/api/bulk-delete', { method: 'POST', body });
+    toast(`Deleted ${r.deleted} stale profile(s).`, 'ok');
+    refresh();
+  } catch (e) {
+    toast('Cleanup failed: ' + e.message, 'err');
+  }
+});
+
+// ─── Per-row actions ────────────────────────────────────────────────────
+$('rows').addEventListener('click', async (e) => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  const code = btn.dataset.code;
+  if (btn.dataset.act === 'edit') {
+    openEditDrawer(code);
+  } else if (btn.dataset.act === 'delete') {
+    if (!confirm(`Delete profile ${code}?`)) return;
+    try {
+      await api('/admin/api/profiles/' + encodeURIComponent(code), { method: 'DELETE' });
+      toast(`Deleted ${code}.`, 'ok');
+      refresh();
+    } catch (err) {
+      toast('Delete failed: ' + err.message, 'err');
+    }
+  }
+});
+
+// ─── Drawer (view / edit / create) ──────────────────────────────────────
+function openCreateDrawer() {
+  drawerMode = 'create';
+  drawerCode = null;
+  $('dTitle').textContent = 'New profile';
+  $('dMeta').innerHTML = '<i style="color:var(--muted)">unsaved</i>';
+  $('dClassEdit').value = '';
+  $('dNameEdit').value  = '';
+  $('dDataEdit').value  = '{\n  \n}\n';
+  $('dDelete').style.display = 'none';
+  $('dSave').textContent = 'Create';
+  validateData();
+  $('drawer').classList.add('open');
+  setTimeout(() => $('dClassEdit').focus(), 100);
+}
+async function openEditDrawer(code) {
+  drawerMode = 'view-edit';
+  drawerCode = code;
+  $('dTitle').textContent = code;
+  $('dMeta').innerHTML = '<span style="grid-column:1/-1;color:var(--muted)">loading…</span>';
+  $('dClassEdit').value = '';
+  $('dNameEdit').value  = '';
+  $('dDataEdit').value  = '';
+  $('dDelete').style.display = '';
+  $('dSave').textContent = 'Save';
+  $('drawer').classList.add('open');
+  try {
+    const p = await api('/admin/api/profiles/' + encodeURIComponent(code));
+    $('dMeta').innerHTML = `
+      <b>code</b><span class="code">${escapeHtml(p.code)}</span>
+      <b>size</b><span>${fmtBytes(p.bytes)}</span>
+      <b>created</b><span>${new Date(p.created_at*1000).toLocaleString()} (${fmtTime(p.created_at)})</span>
+      <b>updated</b><span>${new Date(p.updated_at*1000).toLocaleString()} (${fmtTime(p.updated_at)})</span>
+      <b>creator_token</b><span class="code" style="word-break:break-all">${escapeHtml(p.creator_token)}</span>
+    `;
+    $('dClassEdit').value = p.class;
+    $('dNameEdit').value  = p.name;
+    let pretty;
+    try { pretty = JSON.stringify(JSON.parse(p.data), null, 2); }
+    catch (_) { pretty = p.data; }
+    $('dDataEdit').value = pretty;
+    validateData();
+  } catch (e) {
+    $('dMeta').innerHTML = '';
+    $('dDataEdit').value = 'error: ' + e.message;
+  }
+}
+
+function validateData() {
+  const txt = $('dDataEdit').value;
+  const el  = $('dValid');
+  try {
+    JSON.parse(txt);
+    el.textContent = 'valid JSON';
+    el.className   = 'ok';
+    return true;
+  } catch (e) {
+    el.textContent = 'invalid: ' + e.message;
+    el.className   = 'err';
+    return false;
+  }
+}
+$('dDataEdit').addEventListener('input', validateData);
+
+$('dFormat').addEventListener('click', () => {
+  try {
+    const o = JSON.parse($('dDataEdit').value);
+    $('dDataEdit').value = JSON.stringify(o, null, 2);
+    validateData();
+  } catch (e) {
+    toast('Cannot format: ' + e.message, 'err');
+  }
+});
+
+$('dCopyData').addEventListener('click', () => {
+  navigator.clipboard.writeText($('dDataEdit').value)
+    .then(() => toast('Copied JSON to clipboard.', 'ok'))
+    .catch(err => toast('Copy failed: ' + err.message, 'err'));
+});
+
+$('dCancel').addEventListener('click', closeDrawer);
+$('dClose').addEventListener('click',  closeDrawer);
+function closeDrawer() {
+  $('drawer').classList.remove('open');
+  drawerMode = 'view';
+  drawerCode = null;
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && $('drawer').classList.contains('open')) closeDrawer();
+});
+
+$('dSave').addEventListener('click', async () => {
+  const cls  = $('dClassEdit').value.trim();
+  const name = $('dNameEdit').value.trim();
+  const data = $('dDataEdit').value;
+  if (!cls)  { toast('class is required', 'err'); return; }
+  if (!name) { toast('name is required',  'err'); return; }
+  if (!validateData()) {
+    toast('data is not valid JSON', 'err');
+    return;
+  }
+  try {
+    if (drawerMode === 'create') {
+      const r = await api('/admin/api/profiles', {
+        method: 'POST',
+        body: { class: cls, name, data },
+      });
+      toast(`Created ${r.code}.`, 'ok');
+      closeDrawer();
+      refresh();
+    } else {
+      await api('/admin/api/profiles/' + encodeURIComponent(drawerCode), {
+        method: 'PATCH',
+        body: { class: cls, name, data },
+      });
+      toast(`Saved ${drawerCode}.`, 'ok');
+      // keep drawer open so user can keep editing
+      const code = drawerCode;
+      refresh().then(() => openEditDrawer(code));
+    }
+  } catch (e) {
+    toast('Save failed: ' + e.message, 'err');
+  }
+});
+
+$('dDelete').addEventListener('click', async () => {
+  if (!drawerCode) return;
+  if (!confirm(`Delete profile ${drawerCode}?`)) return;
+  try {
+    await api('/admin/api/profiles/' + encodeURIComponent(drawerCode), { method: 'DELETE' });
+    toast(`Deleted ${drawerCode}.`, 'ok');
+    closeDrawer();
+    refresh();
+  } catch (e) {
+    toast('Delete failed: ' + e.message, 'err');
+  }
+});
+
+$('newProfileBtn').addEventListener('click', openCreateDrawer);
+
+// ─── Users panel ────────────────────────────────────────────────────────
+async function refreshUsers() {
+  if (!session || session.role !== 'superadmin') return;
+  try {
+    allUsers = await api('/admin/api/users');
+    renderUsers();
+  } catch (e) {
+    toast('Load users failed: ' + e.message, 'err');
+  }
+}
+function renderUsers() {
+  const wrap = $('usersRows');
+  wrap.innerHTML = '';
+  $('usersHeader').textContent = `Users (${allUsers.length})`;
+  if (allUsers.length === 0) {
+    $('usersEmpty').style.display = 'block';
+  } else {
+    $('usersEmpty').style.display = 'none';
+  }
+  allUsers.forEach(u => {
+    const row = document.createElement('div');
+    row.className = 'row';
+    const isSelf = (session.user_id != null && session.user_id === u.id);
+    row.innerHTML = `
+      <span class="uname">${escapeHtml(u.username)}</span>
+      <span class="role-pill ${u.role}">${u.role}</span>
+      <span style="color:var(--muted);font-size:12px">created ${fmtTime(u.created_at)}</span>
+      <span class="uactions">
+        <button data-act="role" data-id="${u.id}">Change role</button>
+        <button data-act="pass" data-id="${u.id}">Reset password</button>
+        <button class="danger" data-act="del"  data-id="${u.id}" ${isSelf ? 'disabled title="cannot delete current user"' : ''}>Delete</button>
+      </span>
+    `;
+    wrap.appendChild(row);
+  });
+}
+$('usersRows').addEventListener('click', async (e) => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  const id = parseInt(btn.dataset.id, 10);
+  const u  = allUsers.find(x => x.id === id);
+  if (!u) return;
+
+  if (btn.dataset.act === 'role') {
+    const next = u.role === 'superadmin' ? 'editor' : 'superadmin';
+    if (!confirm(`Change role of "${u.username}" from ${u.role} to ${next}?`)) return;
+    try {
+      await api('/admin/api/users/' + id, { method: 'PATCH', body: { role: next } });
+      toast(`Updated ${u.username}.`, 'ok');
+      refreshUsers();
+    } catch (err) {
+      toast('Role change failed: ' + err.message, 'err');
+    }
+  } else if (btn.dataset.act === 'pass') {
+    const pw = prompt(`New password for "${u.username}" (8+ chars):`);
+    if (!pw) return;
+    try {
+      await api('/admin/api/users/' + id, { method: 'PATCH', body: { password: pw } });
+      toast(`Password updated for ${u.username}.`, 'ok');
+    } catch (err) {
+      toast('Password update failed: ' + err.message, 'err');
+    }
+  } else if (btn.dataset.act === 'del') {
+    if (!confirm(`Delete user "${u.username}"? This cannot be undone.`)) return;
+    try {
+      await api('/admin/api/users/' + id, { method: 'DELETE' });
+      toast(`Deleted ${u.username}.`, 'ok');
+      refreshUsers();
+    } catch (err) {
+      toast('Delete failed: ' + err.message, 'err');
+    }
+  }
+});
+$('newUserBtn').addEventListener('click', async () => {
+  const username = $('newUserName').value.trim();
+  const password = $('newUserPass').value;
+  const role     = $('newUserRole').value;
+  if (!username || !password) {
+    toast('Enter both a username and a password.', 'err');
+    return;
+  }
+  try {
+    await api('/admin/api/users', { method: 'POST', body: { username, password, role } });
+    toast(`Created user ${username}.`, 'ok');
+    $('newUserName').value = '';
+    $('newUserPass').value = '';
+    refreshUsers();
+  } catch (err) {
+    toast('Create failed: ' + err.message, 'err');
+  }
+});
+
+// ─── Boot ───────────────────────────────────────────────────────────────
+(async function boot() {
+  if (!session || !session.token) {
+    showLogin();
+    return;
+  }
+  // Verify the session is still valid before showing the app.  Avoids
+  // a flash-of-content on a stale token.
+  try {
+    const me = await fetch('/admin/api/me', {
+      headers: { 'X-Admin-Session': session.token },
+    });
+    if (!me.ok) throw new Error('expired');
+    const j = await me.json();
+    session.role     = j.role;
+    session.username = j.username;
+    session.user_id  = j.user_id;
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    showApp();
+  } catch (_) {
+    logout();
+  }
+})();
+</script>
+</body>
+</html>

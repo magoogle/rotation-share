@@ -1,0 +1,41 @@
+services:
+  rotation-share:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rotation-share:latest
+    container_name: rotation-share
+    restart: unless-stopped
+
+    # Same wide LAN bind as warmap-server.  The Lua client (cloud_share.lua
+    # in UniversalRotation) hits this directly via curl with X-API-Key,
+    # so auth is at the FastAPI layer and a wide bind is fine.
+    ports:
+      - "8001:8000"
+
+    environment:
+      ROTATION_SHARE_API_KEY:   ${ROTATION_SHARE_API_KEY:?missing ROTATION_SHARE_API_KEY}
+      # Admin key gates the /admin UI + /admin/api/* endpoints.  Acts as
+      # the bootstrap superadmin login (always works, never expires) on
+      # top of per-user accounts created via the Users panel.  Operator-
+      # only -- never embedded in any client.
+      ROTATION_SHARE_ADMIN_KEY: ${ROTATION_SHARE_ADMIN_KEY:?missing ROTATION_SHARE_ADMIN_KEY}
+      ROTATION_SHARE_ROOT:      "/data"
+      ROTATION_SHARE_WORKERS:   "2"
+      # Reject profile bodies larger than this many bytes.  A typical
+      # UniversalRotation profile JSON is a few KB; 256 KB is generous
+      # without leaving the door open for abuse.
+      ROTATION_SHARE_MAX_BYTES: "262144"
+
+    volumes:
+      - rotation-share-data:/data
+
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  rotation-share-data:
+    name: rotation-share-data

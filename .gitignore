@@ -1,0 +1,14 @@
+# Local working files for transport that should never be committed.
+*.b64
+*.b64.*
+
+# Local env / secrets — provisioned out-of-band per host.
+.env
+
+# Python noise
+__pycache__/
+*.pyc
+
+# Editors
+.vscode/
+.idea/
