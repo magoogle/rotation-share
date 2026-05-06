@@ -220,6 +220,119 @@
     justify-content: flex-end;
   }
 
+  /* ── Form editor (drawer Tab 1) ──────────────────────────────────── */
+  .editor-tabs {
+    display: flex; gap: 0;
+    background: var(--panel2);
+    border-bottom: 1px solid var(--border);
+  }
+  .editor-tab {
+    padding: 7px 14px; cursor: pointer;
+    color: var(--muted); font-size: 12px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .editor-tab.active {
+    color: var(--text); border-bottom-color: var(--accent);
+  }
+  .editor-pane { display: none; flex: 1; overflow: auto; }
+  .editor-pane.active { display: flex; flex-direction: column; }
+  .editor-pane.json    { padding: 0; }
+  .editor-pane.form    { padding: 12px 16px; gap: 12px; }
+
+  .form-section {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .form-section > .form-section-head {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    user-select: none;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+  }
+  .form-section.open > .form-section-head {
+    border-bottom-color: var(--border);
+  }
+  .form-section > .form-section-head .chev {
+    color: var(--muted); font-size: 11px;
+    transition: transform .15s;
+  }
+  .form-section.open > .form-section-head .chev { transform: rotate(90deg); }
+  .form-section > .form-section-body { display: none; padding: 10px 12px; }
+  .form-section.open > .form-section-body { display: block; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr max-content 1fr;
+    gap: 6px 10px; align-items: center;
+    font-size: 12px;
+  }
+  .form-grid label { color: var(--muted); }
+  .form-grid input[type="number"], .form-grid input[type="text"], .form-grid select {
+    width: 100%; padding: 4px 8px;
+    font-size: 12px;
+  }
+  .form-grid .span2 { grid-column: span 2; }
+  .form-grid .span4 { grid-column: span 4; }
+  .form-grid .check { display: flex; align-items: center; gap: 6px; }
+  .form-grid .check input[type="checkbox"] { width: auto; }
+
+  .spell-list { display: flex; flex-direction: column; gap: 8px; }
+  .spell-card {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .spell-card.disabled { opacity: 0.6; }
+  .spell-card > .spell-head {
+    padding: 8px 10px;
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .spell-card.open > .spell-head { border-bottom: 1px solid var(--border); }
+  .spell-card > .spell-head .chev {
+    color: var(--muted); font-size: 11px; width: 12px;
+    transition: transform .15s;
+  }
+  .spell-card.open > .spell-head .chev { transform: rotate(90deg); }
+  .spell-card .id-badge {
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+    color: var(--muted); font-size: 11px;
+    background: var(--bg);
+    padding: 2px 6px; border-radius: 3px;
+  }
+  .spell-card .name { font-weight: 600; flex: 1; }
+  .spell-card .pri-pill {
+    background: var(--accent); color: #fff;
+    font-size: 10px; padding: 1px 6px; border-radius: 8px;
+  }
+  .spell-card > .spell-body { display: none; padding: 10px 12px; }
+  .spell-card.open > .spell-body { display: block; }
+  .spell-card .subsection {
+    border-top: 1px dashed var(--border);
+    margin-top: 10px; padding-top: 10px;
+  }
+  .spell-card .subsection-head {
+    color: var(--muted); font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .spell-card .row-actions {
+    margin-top: 12px; display: flex; gap: 8px; justify-content: flex-end;
+  }
+
+  .add-spell-form {
+    display: flex; gap: 8px; align-items: center;
+    padding: 8px 12px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
   /* ── Toasts ──────────────────────────────────────────────────────── */
   #toasts {
     position: fixed; right: 16px; bottom: 16px;
@@ -370,14 +483,52 @@
     <input id="dNameEdit" placeholder="display name">
   </div>
 
-  <div class="data-wrap">
-    <div class="data-toolbar">
-      <span class="label">data (JSON)</span>
-      <span class="spacer" style="flex:1"></span>
-      <span id="dValid" class="ok">valid JSON</span>
-      <button id="dFormat">Format</button>
+  <div class="editor-tabs">
+    <div class="editor-tab active" data-pane="form">Form editor</div>
+    <div class="editor-tab" data-pane="json">Raw JSON</div>
+    <span class="spacer" style="flex:1"></span>
+    <span id="dValid" class="ok" style="padding:7px 12px;font-size:12px">valid JSON</span>
+    <button id="dFormat" style="margin:4px">Format JSON</button>
+  </div>
+
+  <!-- Form pane: structured editor for the rotation profile.  Built
+       fresh from the parsed JSON each time the drawer opens; user
+       edits write back to an in-memory data object that gets
+       JSON.stringify'd on save (or visible in the Raw JSON tab). -->
+  <div class="editor-pane form active" id="dFormPane">
+    <!-- Global section -->
+    <div class="form-section open" data-section="global">
+      <div class="form-section-head">
+        <span class="chev">▶</span>
+        <span>Global</span>
+      </div>
+      <div class="form-section-body">
+        <div class="form-grid" id="dGlobalGrid"></div>
+      </div>
     </div>
-    <textarea id="dDataEdit" spellcheck="false" wrap="off"></textarea>
+
+    <!-- Spells -->
+    <div class="form-section open" data-section="spells">
+      <div class="form-section-head">
+        <span class="chev">▶</span>
+        <span>Spells (<span id="dSpellCount">0</span>)</span>
+      </div>
+      <div class="form-section-body">
+        <div class="add-spell-form">
+          <input id="dAddSpellId" type="text" placeholder="spell id (number)" style="width:160px">
+          <button id="dAddSpellBtn" class="primary">+ Add spell</button>
+          <span style="color:var(--muted);font-size:11px;flex:1">
+            Plugin populates display names at runtime; the editor only stores the id.
+          </span>
+        </div>
+        <div class="spell-list" id="dSpellList" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Raw JSON pane: existing escape-hatch textarea -->
+  <div class="editor-pane json" id="dJsonPane">
+    <textarea id="dDataEdit" spellcheck="false" wrap="off" style="flex:1;width:100%;height:100%;border:none;padding:12px 16px;background:var(--bg);color:var(--text);font:12px/1.5 ui-monospace,'SFMono-Regular',Consolas,monospace;resize:none"></textarea>
   </div>
 
   <div class="footer">
@@ -723,10 +874,13 @@ function openCreateDrawer() {
   $('dMeta').innerHTML = '<i style="color:var(--muted)">unsaved</i>';
   $('dClassEdit').value = '';
   $('dNameEdit').value  = '';
-  $('dDataEdit').value  = '{\n  \n}\n';
+  // Seed an empty profile so the form has something to render.
+  dData = defaultProfile('', '');
+  $('dDataEdit').value  = JSON.stringify(dData, null, 2);
   $('dDelete').style.display = 'none';
   $('dSave').textContent = 'Create';
   validateData();
+  showEditorPane('form');
   $('drawer').classList.add('open');
   setTimeout(() => $('dClassEdit').focus(), 100);
 }
@@ -752,11 +906,28 @@ async function openEditDrawer(code) {
     `;
     $('dClassEdit').value = p.class;
     $('dNameEdit').value  = p.name;
-    let pretty;
-    try { pretty = JSON.stringify(JSON.parse(p.data), null, 2); }
-    catch (_) { pretty = p.data; }
+    let pretty, parsed;
+    try {
+      parsed = JSON.parse(p.data);
+      pretty = JSON.stringify(parsed, null, 2);
+    } catch (_) {
+      parsed = null;
+      pretty = p.data;
+    }
     $('dDataEdit').value = pretty;
     validateData();
+    // Seed the in-memory data from the profile.  When parse fails (the
+    // server stored non-JSON, e.g. legacy data), default to an empty
+    // shell so the form can still render -- the user can fix it via
+    // the Raw JSON tab if needed.
+    dData = (parsed && typeof parsed === 'object')
+              ? parsed
+              : defaultProfile(p.class, p.name);
+    if (typeof dData.spells !== 'object' || !dData.spells) dData.spells = {};
+    if (typeof dData.global !== 'object' || !dData.global) {
+      dData.global = defaultProfile().global;
+    }
+    showEditorPane('form');
   } catch (e) {
     $('dMeta').innerHTML = '';
     $('dDataEdit').value = 'error: ' + e.message;
@@ -777,7 +948,11 @@ function validateData() {
     return false;
   }
 }
-$('dDataEdit').addEventListener('input', validateData);
+$('dDataEdit').addEventListener('input', () => {
+  validateData();
+  // JSON pane is the current source of truth -- we'll re-parse on next
+  // tab switch back to Form.  No live re-render here (cheap option).
+});
 
 $('dFormat').addEventListener('click', () => {
   try {
@@ -789,8 +964,429 @@ $('dFormat').addEventListener('click', () => {
   }
 });
 
+// ─── Form editor ────────────────────────────────────────────────────────
+// Profile schema lookup tables (mirror core/spell_config.lua).  Indices
+// match the plugin's combo_box semantics (0-based).  Keep these in sync
+// when the plugin adds/changes options.
+
+const TARGET_MODE_LABELS  = ['Priority', 'Closest', 'Lowest HP', 'Highest HP', 'Cleave Center', 'Cursor'];
+const RESOURCE_MODE_LABELS= ['Below %', 'Above %'];
+const HEALTH_MODE_LABELS  = ['Below %', 'Above %'];
+const CAST_METHOD_LABELS  = ['Normal', 'Key Press', 'Force Stand Still + Key'];
+const SKILL_SLOT_LABELS   = ['Slot 1', 'Slot 2', 'Slot 3', 'Slot 4', 'Slot 5', 'Slot 6'];
+const EVADE_AIM_LABELS    = ['No Aim (cursor as-is)', 'Towards Next Enemy', 'Orbwalker Direction'];
+const SPELL_TYPE_LABELS   = ['Auto', 'Melee', 'Ranged'];
+const BUFF_MODE_LABELS    = ['Active', 'Missing'];
+const RESOURCE_TYPE_LABELS= ['Primary %', 'Secondary count'];
+
+// Key press dropdown -- VK codes are stored on the wire, labels are UI.
+const KEY_PRESS_LABELS = ['Space','E','Q','R','F','G','X','Z',
+                          '1','2','3','4','5','6',
+                          'Shift','Ctrl','Alt','Mouse4','Mouse5'];
+const KEY_PRESS_CODES  = [0x20, 0x45, 0x51, 0x52, 0x46, 0x47, 0x58, 0x5A,
+                          0x31, 0x32, 0x33, 0x34, 0x35, 0x36,
+                          0x10, 0x11, 0x12, 0x05, 0x06];
+const HOLD_KEY_LABELS  = ['Shift', 'Ctrl', 'Alt'];
+const HOLD_KEY_CODES   = [0x10, 0x11, 0x12];
+
+// Virtual evade spell uses this sentinel id (matches spell_config.VIRTUAL_EVADE_ID).
+const VIRTUAL_EVADE_ID = 999999999;
+
+// In-memory canonical profile object.  All form widgets bind to this;
+// the JSON pane is rendered from it on demand.  null = nothing loaded.
+let dData = null;
+
+// Default values for newly-added spells (matches spell_config.get_elements).
+function defaultSpellCfg() {
+  return {
+    enabled: true, priority: 5,
+    cooldown: 0.4, charges: 1,
+    spell_type: 0, target_mode: 0,
+    range: 12.0, aoe_range: 6.0,
+    elite_only: false, boss_only: false, min_enemies: 0,
+    self_cast: false,
+    require_buff: false, buff_hash: 0, buff_name: '', buff_mode: 0, buff_stacks: 1,
+    use_resource: false, resource_override: false,
+    resource_type: 0, resource_mode: 1, resource_pct: 50,
+    use_health: false, health_mode: 0, health_pct: 50,
+    use_chain: false, chain_target_id: 0, chain_boost: 3, chain_duration: 3.0,
+    use_stack_pri: false, stack_pri_use_buff: false,
+    stack_pri_buff_hash: 0, stack_pri_buff_name: '',
+    stack_pri_count: 4, stack_pri_below_pri: 1, stack_pri_reset: 4.0,
+    stack_pri_targeted: false,
+    is_channeled: false,
+    cast_method: 0, evade_key: 0x20, evade_aim_mode: 0,
+    force_hold_key: 0x10, skill_slot: 0,
+  };
+}
+
+function defaultProfile(klass, name) {
+  return {
+    version: 2,
+    class:   klass || 'unknown',
+    profile: name  || 'Default',
+    global: {
+      scan_range:         25,
+      anim_delay:         0.05,
+      global_min_enemies: 0,
+      debug_mode:         false,
+      overlay_enabled:    false,
+      overlay_x:          50,
+      overlay_y:          50,
+      overlay_show_buffs: false,
+    },
+    spells: {},
+    buff_history: {},
+  };
+}
+
+// Build a label-input pair to insert into a .form-grid container.
+function gridInput(label, type, val, onChange, opts) {
+  opts = opts || {};
+  const lab = document.createElement('label');
+  lab.textContent = label;
+  let inp;
+  if (type === 'checkbox') {
+    const wrap = document.createElement('div');
+    wrap.className = 'check';
+    inp = document.createElement('input');
+    inp.type = 'checkbox';
+    inp.checked = !!val;
+    inp.addEventListener('change', () => onChange(inp.checked));
+    wrap.appendChild(inp);
+    return [lab, wrap];
+  } else if (type === 'select') {
+    inp = document.createElement('select');
+    (opts.labels || []).forEach((lbl, i) => {
+      const o = document.createElement('option');
+      o.value = String(i);
+      o.textContent = lbl;
+      inp.appendChild(o);
+    });
+    inp.value = String(val ?? 0);
+    inp.addEventListener('change', () => onChange(parseInt(inp.value, 10)));
+  } else if (type === 'select-coded') {
+    // For VK codes -- stored value is a numeric code, dropdown shows label.
+    inp = document.createElement('select');
+    (opts.labels || []).forEach((lbl, i) => {
+      const o = document.createElement('option');
+      o.value = String(opts.codes[i]);
+      o.textContent = lbl;
+      inp.appendChild(o);
+    });
+    inp.value = String(val ?? opts.codes[0]);
+    inp.addEventListener('change', () => onChange(parseInt(inp.value, 10)));
+  } else {
+    inp = document.createElement('input');
+    inp.type = type;
+    if (opts.min !== undefined) inp.min = String(opts.min);
+    if (opts.max !== undefined) inp.max = String(opts.max);
+    if (opts.step !== undefined) inp.step = String(opts.step);
+    inp.value = (val == null) ? '' : String(val);
+    const handler = () => {
+      let v = inp.value;
+      if (type === 'number') {
+        v = (opts.float ? parseFloat(v) : parseInt(v, 10));
+        if (!isFinite(v)) v = 0;
+      }
+      onChange(v);
+    };
+    inp.addEventListener('input', handler);
+  }
+  return [lab, inp];
+}
+
+// Pretty-format a spell id for display.  No name resolution available
+// in the browser (the plugin reads it from the host's spell DB at
+// runtime); we just show the numeric id.
+function spellHeader(sid, cfg) {
+  const en  = cfg.enabled ? '☑' : '☐';
+  const pri = cfg.priority != null ? cfg.priority : '?';
+  return { en, pri, label: sid === VIRTUAL_EVADE_ID ? 'Virtual Evade' : ('spell #' + sid) };
+}
+
+function renderGlobalGrid() {
+  const g = $('dGlobalGrid');
+  g.innerHTML = '';
+  if (!dData || !dData.global) return;
+  const G = dData.global;
+  const add = (lab, type, key, opts) => {
+    const [l, i] = gridInput(lab, type, G[key], v => { G[key] = v; }, opts);
+    g.appendChild(l); g.appendChild(i);
+  };
+  add('scan_range',         'number',   'scan_range',         { min: 1, max: 60 });
+  add('anim_delay (s)',     'number',   'anim_delay',         { min: 0, max: 5, step: 0.01, float: true });
+  add('global_min_enemies', 'number',   'global_min_enemies', { min: 0, max: 50 });
+  add('debug_mode',         'checkbox', 'debug_mode');
+  add('overlay_enabled',    'checkbox', 'overlay_enabled');
+  add('overlay_show_buffs', 'checkbox', 'overlay_show_buffs');
+  add('overlay_x',          'number',   'overlay_x',          { min: 0, max: 4000 });
+  add('overlay_y',          'number',   'overlay_y',          { min: 0, max: 3000 });
+}
+
+function renderSpellList() {
+  const wrap = $('dSpellList');
+  wrap.innerHTML = '';
+  if (!dData || typeof dData.spells !== 'object') return;
+  const ids = Object.keys(dData.spells)
+    .map(s => Number(s))
+    .filter(n => !Number.isNaN(n))
+    .sort((a, b) => {
+      const ap = dData.spells[String(a)].priority || 99;
+      const bp = dData.spells[String(b)].priority || 99;
+      if (ap !== bp) return ap - bp;
+      return a - b;
+    });
+  $('dSpellCount').textContent = String(ids.length);
+  ids.forEach(sid => wrap.appendChild(renderSpellCard(sid)));
+}
+
+function renderSpellCard(sid) {
+  const cfg = dData.spells[String(sid)];
+  const card = document.createElement('div');
+  card.className = 'spell-card';
+  if (!cfg.enabled) card.classList.add('disabled');
+  const hdr = spellHeader(sid, cfg);
+
+  // ── header ──
+  const head = document.createElement('div');
+  head.className = 'spell-head';
+  head.innerHTML = `
+    <span class="chev">▶</span>
+    <span class="id-badge">${sid === VIRTUAL_EVADE_ID ? 'evade' : sid}</span>
+    <span class="name">${hdr.label}</span>
+    <span class="pri-pill">P${hdr.pri}</span>
+    <span style="color:var(--muted);font-size:11px">${cfg.enabled ? '' : 'disabled'}</span>
+  `;
+  head.addEventListener('click', () => card.classList.toggle('open'));
+  card.appendChild(head);
+
+  // ── body ──
+  const body = document.createElement('div');
+  body.className = 'spell-body';
+
+  // Section: Core
+  body.appendChild(buildSpellCoreSection(sid, cfg, card));
+  body.appendChild(buildSpellTargetingSection(sid, cfg));
+  body.appendChild(buildSpellBuffSection(sid, cfg));
+  body.appendChild(buildSpellResourceSection(sid, cfg));
+  body.appendChild(buildSpellHealthSection(sid, cfg));
+  body.appendChild(buildSpellChainSection(sid, cfg));
+  body.appendChild(buildSpellStackPriSection(sid, cfg));
+
+  // Row actions
+  const ra = document.createElement('div');
+  ra.className = 'row-actions';
+  const del = document.createElement('button');
+  del.className = 'danger';
+  del.textContent = 'Delete spell';
+  del.addEventListener('click', () => {
+    if (!confirm(`Remove spell ${sid} from this profile?`)) return;
+    delete dData.spells[String(sid)];
+    renderSpellList();
+  });
+  ra.appendChild(del);
+  body.appendChild(ra);
+
+  card.appendChild(body);
+  return card;
+}
+
+function buildSubsection(title, fn) {
+  const wrap = document.createElement('div');
+  wrap.className = 'subsection';
+  const h = document.createElement('div');
+  h.className = 'subsection-head';
+  h.textContent = title;
+  wrap.appendChild(h);
+  const grid = document.createElement('div');
+  grid.className = 'form-grid';
+  wrap.appendChild(grid);
+  fn(grid);
+  return wrap;
+}
+
+function buildSpellCoreSection(sid, cfg, card) {
+  const grid = document.createElement('div');
+  grid.className = 'form-grid';
+  const add = (lab, type, key, opts) => {
+    const [l, i] = gridInput(lab, type, cfg[key], v => {
+      cfg[key] = v;
+      if (key === 'enabled')  card.classList.toggle('disabled', !v);
+      if (key === 'enabled' || key === 'priority') {
+        // refresh header pill / disabled visuals
+        const head = card.querySelector('.spell-head .pri-pill');
+        if (head) head.textContent = 'P' + (cfg.priority != null ? cfg.priority : '?');
+      }
+    }, opts);
+    grid.appendChild(l); grid.appendChild(i);
+  };
+  add('enabled',    'checkbox', 'enabled');
+  add('priority',   'number',   'priority',  { min: 1, max: 10 });
+  add('cooldown s', 'number',   'cooldown',  { min: 0, max: 5, step: 0.05, float: true });
+  add('charges',    'number',   'charges',   { min: 1, max: 5 });
+  add('cast_method','select',   'cast_method', { labels: CAST_METHOD_LABELS });
+  add('is_channeled','checkbox','is_channeled');
+  // Cast-method-specific:
+  add('evade_key',     'select-coded', 'evade_key',     { labels: KEY_PRESS_LABELS, codes: KEY_PRESS_CODES });
+  add('evade_aim_mode','select',       'evade_aim_mode',{ labels: EVADE_AIM_LABELS });
+  add('force_hold_key','select-coded', 'force_hold_key',{ labels: HOLD_KEY_LABELS, codes: HOLD_KEY_CODES });
+  add('skill_slot',    'select',       'skill_slot',    { labels: SKILL_SLOT_LABELS });
+  return grid;
+}
+
+function buildSpellTargetingSection(sid, cfg) {
+  return buildSubsection('Targeting', (grid) => {
+    const add = (lab, type, key, opts) => {
+      const [l, i] = gridInput(lab, type, cfg[key], v => { cfg[key] = v; }, opts);
+      grid.appendChild(l); grid.appendChild(i);
+    };
+    add('self_cast',  'checkbox', 'self_cast');
+    add('spell_type', 'select',   'spell_type',  { labels: SPELL_TYPE_LABELS });
+    add('target_mode','select',   'target_mode', { labels: TARGET_MODE_LABELS });
+    add('range (yds)','number',   'range',       { min: 1, max: 30, step: 0.5, float: true });
+    add('aoe_range',  'number',   'aoe_range',   { min: 1, max: 20, step: 0.5, float: true });
+    add('elite_only', 'checkbox', 'elite_only');
+    add('boss_only',  'checkbox', 'boss_only');
+    add('min_enemies','number',   'min_enemies', { min: 0, max: 15 });
+  });
+}
+
+function buildSpellBuffSection(sid, cfg) {
+  return buildSubsection('Buff condition', (grid) => {
+    const add = (lab, type, key, opts) => {
+      const [l, i] = gridInput(lab, type, cfg[key], v => { cfg[key] = v; }, opts);
+      grid.appendChild(l); grid.appendChild(i);
+    };
+    add('require_buff', 'checkbox', 'require_buff');
+    add('buff_mode',    'select',   'buff_mode',   { labels: BUFF_MODE_LABELS });
+    add('buff_name',    'text',     'buff_name');
+    add('buff_hash',    'number',   'buff_hash',   { min: 0 });
+    add('buff_stacks',  'number',   'buff_stacks', { min: 1, max: 50 });
+  });
+}
+
+function buildSpellResourceSection(sid, cfg) {
+  return buildSubsection('Resource condition', (grid) => {
+    const add = (lab, type, key, opts) => {
+      const [l, i] = gridInput(lab, type, cfg[key], v => { cfg[key] = v; }, opts);
+      grid.appendChild(l); grid.appendChild(i);
+    };
+    add('use_resource',     'checkbox', 'use_resource');
+    add('resource_override','checkbox', 'resource_override');
+    add('resource_type',    'select',   'resource_type', { labels: RESOURCE_TYPE_LABELS });
+    add('resource_mode',    'select',   'resource_mode', { labels: RESOURCE_MODE_LABELS });
+    add('resource_pct',     'number',   'resource_pct',  { min: 1, max: 100 });
+  });
+}
+
+function buildSpellHealthSection(sid, cfg) {
+  return buildSubsection('Health condition', (grid) => {
+    const add = (lab, type, key, opts) => {
+      const [l, i] = gridInput(lab, type, cfg[key], v => { cfg[key] = v; }, opts);
+      grid.appendChild(l); grid.appendChild(i);
+    };
+    add('use_health',  'checkbox', 'use_health');
+    add('health_mode', 'select',   'health_mode', { labels: HEALTH_MODE_LABELS });
+    add('health_pct',  'number',   'health_pct',  { min: 1, max: 100 });
+  });
+}
+
+function buildSpellChainSection(sid, cfg) {
+  return buildSubsection('Chain combo (after this casts, boost another spell)', (grid) => {
+    const add = (lab, type, key, opts) => {
+      const [l, i] = gridInput(lab, type, cfg[key], v => { cfg[key] = v; }, opts);
+      grid.appendChild(l); grid.appendChild(i);
+    };
+    add('use_chain',      'checkbox', 'use_chain');
+    add('chain_target_id','number',   'chain_target_id', { min: 0 });
+    add('chain_boost',    'number',   'chain_boost',     { min: 1, max: 9 });
+    add('chain_duration s','number',  'chain_duration',  { min: 0.5, max: 10, step: 0.5, float: true });
+  });
+}
+
+function buildSpellStackPriSection(sid, cfg) {
+  return buildSubsection('Stack-priority override', (grid) => {
+    const add = (lab, type, key, opts) => {
+      const [l, i] = gridInput(lab, type, cfg[key], v => { cfg[key] = v; }, opts);
+      grid.appendChild(l); grid.appendChild(i);
+    };
+    add('use_stack_pri',     'checkbox', 'use_stack_pri');
+    add('stack_pri_use_buff','checkbox', 'stack_pri_use_buff');
+    add('stack_pri_buff_name','text',    'stack_pri_buff_name');
+    add('stack_pri_buff_hash','number',  'stack_pri_buff_hash', { min: 0 });
+    add('stack_pri_count',   'number',   'stack_pri_count',     { min: 1, max: 20 });
+    add('stack_pri_below_pri','number',  'stack_pri_below_pri', { min: 1, max: 10 });
+    add('stack_pri_reset s', 'number',   'stack_pri_reset',     { min: 0.5, max: 15, step: 0.5, float: true });
+    add('stack_pri_targeted','checkbox', 'stack_pri_targeted');
+  });
+}
+
+function renderForm() {
+  renderGlobalGrid();
+  renderSpellList();
+}
+
+// Section / collapsible chevrons (event delegation)
+$('dFormPane').addEventListener('click', (e) => {
+  const head = e.target.closest('.form-section-head');
+  if (head) head.parentElement.classList.toggle('open');
+});
+
+// Add-spell handler
+$('dAddSpellBtn').addEventListener('click', () => {
+  const v = $('dAddSpellId').value.trim();
+  const sid = parseInt(v, 10);
+  if (!isFinite(sid) || sid <= 0) { toast('Enter a positive spell id.', 'err'); return; }
+  if (dData.spells[String(sid)]) { toast(`Spell ${sid} is already in the profile.`, 'err'); return; }
+  dData.spells[String(sid)] = defaultSpellCfg();
+  $('dAddSpellId').value = '';
+  renderSpellList();
+});
+
+// ─── Tab switching (Form ↔ Raw JSON) ────────────────────────────────────
+function showEditorPane(name) {
+  document.querySelectorAll('.editor-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.pane === name);
+  });
+  $('dFormPane').classList.toggle('active', name === 'form');
+  $('dJsonPane').classList.toggle('active', name === 'json');
+  if (name === 'form') {
+    // Pull fresh data from the JSON pane (in case the user edited the
+    // raw JSON before switching).
+    try {
+      const parsed = JSON.parse($('dDataEdit').value);
+      if (parsed && typeof parsed === 'object') {
+        dData = parsed;
+        if (typeof dData.spells !== 'object' || !dData.spells) dData.spells = {};
+        if (typeof dData.global !== 'object' || !dData.global) dData.global = defaultProfile().global;
+      }
+    } catch (e) {
+      toast('Cannot parse JSON: ' + e.message + ' — switch to Raw JSON to fix.', 'err');
+    }
+    renderForm();
+  } else {
+    // Pull fresh data from the in-memory dData and write it to the textarea.
+    if (dData) {
+      $('dDataEdit').value = JSON.stringify(dData, null, 2);
+      validateData();
+    }
+  }
+}
+document.querySelectorAll('.editor-tab').forEach(t => {
+  t.addEventListener('click', () => showEditorPane(t.dataset.pane));
+});
+
 $('dCopyData').addEventListener('click', () => {
-  navigator.clipboard.writeText($('dDataEdit').value)
+  // Sync the JSON view from the in-memory form state if the form pane
+  // is currently active -- otherwise we'd copy a stale textarea.
+  let txt;
+  try { txt = currentDataString(); }
+  catch (e) { toast('Cannot copy: ' + e.message, 'err'); return; }
+  if (!txt) { toast('Nothing to copy.', 'err'); return; }
+  // Pretty-print so what lands on the clipboard is readable.
+  try { txt = JSON.stringify(JSON.parse(txt), null, 2); } catch (_) {}
+  navigator.clipboard.writeText(txt)
     .then(() => toast('Copied JSON to clipboard.', 'ok'))
     .catch(err => toast('Copy failed: ' + err.message, 'err'));
 });
@@ -806,16 +1402,31 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && $('drawer').classList.contains('open')) closeDrawer();
 });
 
+// Source-of-truth helper.  When the user clicks Save, pull the current
+// profile data from whichever pane they're looking at -- so unsaved
+// edits in the active tab don't get lost to the other pane's stale view.
+function currentDataString() {
+  const formActive = $('dFormPane').classList.contains('active');
+  if (formActive) {
+    if (!dData) return '';
+    return JSON.stringify(dData);
+  }
+  // JSON pane: validate it parses.
+  const txt = $('dDataEdit').value;
+  try { JSON.parse(txt); } catch (e) { throw new Error('invalid JSON: ' + e.message); }
+  return txt;
+}
+
 $('dSave').addEventListener('click', async () => {
   const cls  = $('dClassEdit').value.trim();
   const name = $('dNameEdit').value.trim();
-  const data = $('dDataEdit').value;
   if (!cls)  { toast('class is required', 'err'); return; }
   if (!name) { toast('name is required',  'err'); return; }
-  if (!validateData()) {
-    toast('data is not valid JSON', 'err');
-    return;
-  }
+  let data;
+  try { data = currentDataString(); }
+  catch (e) { toast(e.message, 'err'); return; }
+  if (!data) { toast('profile is empty', 'err'); return; }
+
   try {
     if (drawerMode === 'create') {
       const r = await api('/admin/api/profiles', {
