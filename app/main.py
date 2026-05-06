@@ -202,60 +202,8 @@ _conn.row_factory = sqlite3.Row
 _conn.execute('PRAGMA journal_mode=WAL')
 _conn.execute('PRAGMA synchronous=NORMAL')
 _conn.executescript(_SCHEMA)
-
-
-# ── Bootstrap the first admin ───────────────────────────────────────────────
-# If the users table is empty AND the operator has set
-# ROTATION_SHARE_BOOTSTRAP_USER=username:password[:role] in the
-# environment, create that user once.  This is the recovery path for
-# fresh deploys + lockout situations -- with the master-key login
-# removed there is no built-in fallback otherwise.  Subsequent restarts
-# are no-ops because the table is no longer empty.
-def _bootstrap_first_user() -> None:
-    spec = (os.environ.get('ROTATION_SHARE_BOOTSTRAP_USER') or '').strip()
-    row = _query_one('SELECT COUNT(*) AS n FROM users')
-    n_users = int(row['n']) if row else 0
-    if n_users > 0:
-        return
-    if not spec:
-        print(
-            '[rotation-share] WARNING: users table is empty and no '
-            'ROTATION_SHARE_BOOTSTRAP_USER is set -- nobody can log in. '
-            'Set ROTATION_SHARE_BOOTSTRAP_USER=user:pass[:role] in .env '
-            'and restart, or insert a row directly into the users table.',
-            flush=True,
-        )
-        return
-    try:
-        parts = spec.split(':')
-        if len(parts) < 2:
-            raise ValueError('expected "username:password[:role]"')
-        u = parts[0].strip()
-        p = parts[1]
-        r = parts[2].strip() if len(parts) > 2 else 'superadmin'
-        if not _USERNAME_RE.match(u):
-            raise ValueError(f'bad username "{u}"')
-        if r not in _VALID_ROLES:
-            raise ValueError(f'bad role "{r}" (must be one of {list(_VALID_ROLES)})')
-        if len(p) < 8:
-            raise ValueError('password must be at least 8 characters')
-        now = time.time()
-        with _write() as c:
-            c.execute(
-                'INSERT INTO users(username, password_hash, role, '
-                '                  created_at, updated_at) '
-                'VALUES (?, ?, ?, ?, ?)',
-                (u, _hash_password(p), r, now, now),
-            )
-        print(
-            f'[rotation-share] bootstrap: created user "{u}" with role "{r}"',
-            flush=True,
-        )
-    except Exception as e:
-        print(f'[rotation-share] bootstrap FAILED: {e}', flush=True)
-
-
-_bootstrap_first_user()
+# (Bootstrap-first-user check is at the bottom of this module; it
+#  needs _query_one + _write + _hash_password defined first.)
 
 
 @contextmanager
@@ -961,3 +909,56 @@ def admin_delete_user(
     if deleted == 0:
         return _err('user not found', 404)
     return {'ok': True, 'deleted': deleted}
+
+
+# ── Bootstrap the first admin ───────────────────────────────────────────────
+# Runs at module load (after every helper above is defined).  If the
+# `users` table is empty AND ROTATION_SHARE_BOOTSTRAP_USER is set as
+# "username:password[:role]", create that row once.  Subsequent restarts
+# are no-ops because the table is no longer empty.  This is the recovery
+# path for fresh deploys + lockouts now that the master-key login is gone.
+def _bootstrap_first_user() -> None:
+    row = _query_one('SELECT COUNT(*) AS n FROM users')
+    n_users = int(row['n']) if row else 0
+    if n_users > 0:
+        return
+    spec = (os.environ.get('ROTATION_SHARE_BOOTSTRAP_USER') or '').strip()
+    if not spec:
+        print(
+            '[rotation-share] WARNING: users table is empty and no '
+            'ROTATION_SHARE_BOOTSTRAP_USER is set -- nobody can log in. '
+            'Set ROTATION_SHARE_BOOTSTRAP_USER=user:pass[:role] in .env '
+            'and restart, or insert a row directly into the users table.',
+            flush=True,
+        )
+        return
+    try:
+        parts = spec.split(':')
+        if len(parts) < 2:
+            raise ValueError('expected "username:password[:role]"')
+        u = parts[0].strip()
+        p = parts[1]
+        r = parts[2].strip() if len(parts) > 2 else 'superadmin'
+        if not _USERNAME_RE.match(u):
+            raise ValueError(f'bad username "{u}"')
+        if r not in _VALID_ROLES:
+            raise ValueError(f'bad role "{r}" (must be one of {list(_VALID_ROLES)})')
+        if len(p) < 8:
+            raise ValueError('password must be at least 8 characters')
+        now = time.time()
+        with _write() as c:
+            c.execute(
+                'INSERT INTO users(username, password_hash, role, '
+                '                  created_at, updated_at) '
+                'VALUES (?, ?, ?, ?, ?)',
+                (u, _hash_password(p), r, now, now),
+            )
+        print(
+            f'[rotation-share] bootstrap: created user "{u}" with role "{r}"',
+            flush=True,
+        )
+    except Exception as e:
+        print(f'[rotation-share] bootstrap FAILED: {e}', flush=True)
+
+
+_bootstrap_first_user()
