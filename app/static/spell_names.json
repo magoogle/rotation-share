@@ -1,0 +1,3286 @@
+{
+"1000301": {
+"class": "druid",
+"name": "Talent 01"
+},
+"1000308": {
+"class": "druid",
+"name": "Talent 02"
+},
+"1000309": {
+"class": "druid",
+"name": "Talent 03"
+},
+"1000310": {
+"class": "druid",
+"name": "Talent 04"
+},
+"1000311": {
+"class": "druid",
+"name": "Talent 05"
+},
+"1000312": {
+"class": "druid",
+"name": "Talent 06"
+},
+"1000313": {
+"class": "druid",
+"name": "Talent 07"
+},
+"1000315": {
+"class": "druid",
+"name": "Talent 08"
+},
+"1000347": {
+"class": "druid",
+"name": "Talent 10"
+},
+"1000349": {
+"class": "druid",
+"name": "Talent 11"
+},
+"1000350": {
+"class": "druid",
+"name": "Talent 12"
+},
+"1000352": {
+"class": "druid",
+"name": "Talent 09"
+},
+"1003188": {
+"class": "barbarian",
+"name": "Talent 01"
+},
+"1003207": {
+"class": "barbarian",
+"name": "Talent 02"
+},
+"1003208": {
+"class": "barbarian",
+"name": "Talent 03"
+},
+"1003209": {
+"class": "barbarian",
+"name": "Talent 04"
+},
+"1003210": {
+"class": "barbarian",
+"name": "Talent 05"
+},
+"1003229": {
+"class": "barbarian",
+"name": "Talent 06"
+},
+"1003230": {
+"class": "barbarian",
+"name": "Talent 07"
+},
+"1003231": {
+"class": "barbarian",
+"name": "Talent 08"
+},
+"1003232": {
+"class": "barbarian",
+"name": "Talent 09"
+},
+"1003233": {
+"class": "barbarian",
+"name": "Talent 10"
+},
+"1003729": {
+"class": "sorcerer",
+"name": "Talent 01"
+},
+"1003731": {
+"class": "sorcerer",
+"name": "Talent 02"
+},
+"1003732": {
+"class": "sorcerer",
+"name": "Talent 03"
+},
+"1003733": {
+"class": "sorcerer",
+"name": "Talent 04"
+},
+"1003734": {
+"class": "sorcerer",
+"name": "Talent 05"
+},
+"1003735": {
+"class": "sorcerer",
+"name": "Talent 06"
+},
+"1003736": {
+"class": "sorcerer",
+"name": "Talent 07"
+},
+"1003737": {
+"class": "sorcerer",
+"name": "Talent 08"
+},
+"1003738": {
+"class": "sorcerer",
+"name": "Talent 09"
+},
+"1003739": {
+"class": "sorcerer",
+"name": "Talent 10"
+},
+"1007840": {
+"class": "necromancer",
+"name": "Talent 01"
+},
+"1007841": {
+"class": "necromancer",
+"name": "Talent 02"
+},
+"1007842": {
+"class": "necromancer",
+"name": "Talent 03"
+},
+"1007843": {
+"class": "necromancer",
+"name": "Talent 04"
+},
+"1007844": {
+"class": "necromancer",
+"name": "Talent 05"
+},
+"1007846": {
+"class": "necromancer",
+"name": "Talent 06"
+},
+"1007847": {
+"class": "necromancer",
+"name": "Talent 07"
+},
+"1007848": {
+"class": "necromancer",
+"name": "Talent 08"
+},
+"1007849": {
+"class": "necromancer",
+"name": "Talent 09"
+},
+"1007850": {
+"class": "necromancer",
+"name": "Talent 10"
+},
+"1008671": {
+"class": "rogue",
+"name": "Talent 01"
+},
+"1008672": {
+"class": "rogue",
+"name": "Talent 02"
+},
+"1008673": {
+"class": "rogue",
+"name": "Talent 03"
+},
+"1008674": {
+"class": "rogue",
+"name": "Talent 04"
+},
+"1008675": {
+"class": "rogue",
+"name": "Talent 05"
+},
+"1008676": {
+"class": "rogue",
+"name": "Talent 06"
+},
+"1008677": {
+"class": "rogue",
+"name": "Talent 07"
+},
+"1008678": {
+"class": "rogue",
+"name": "Talent 08"
+},
+"1008679": {
+"class": "rogue",
+"name": "Talent 09"
+},
+"1008680": {
+"class": "rogue",
+"name": "Talent 10"
+},
+"1031625": {
+"class": "barbarian",
+"name": "Dust Devils"
+},
+"1031902": {
+"class": "barbarian",
+"name": "Earthquake"
+},
+"1037034": {
+"class": "necromancer",
+"name": "Skeleton Mage Blizzard"
+},
+"1040745": {
+"class": "sorcerer",
+"name": "Ice Spike"
+},
+"1059157": {
+"class": "necromancer",
+"name": "Raise Skeleton"
+},
+"1064741": {
+"class": "druid",
+"name": "Lightning Strike"
+},
+"1065693": {
+"class": "druid",
+"name": "Talent 13"
+},
+"1066757": {
+"class": "druid",
+"name": "Talent 14"
+},
+"1071660": {
+"class": "sorcerer",
+"name": "Ice Blades VFX Transition Aggressive"
+},
+"1071666": {
+"class": "sorcerer",
+"name": "Ice Blades VFX Transition Idle"
+},
+"1076889": {
+"class": "druid",
+"name": "Passive Eagle 01"
+},
+"1076890": {
+"class": "druid",
+"name": "Passive Eagle 02"
+},
+"1076891": {
+"class": "druid",
+"name": "Passive Eagle 03"
+},
+"1076892": {
+"class": "druid",
+"name": "Passive Eagle 04"
+},
+"1083770": {
+"class": "necromancer",
+"name": "Skeleton Priest Healing"
+},
+"1087908": {
+"class": "rogue",
+"name": "Stealth Passability"
+},
+"1092920": {
+"class": "barbarian",
+"name": "Weapon Expertise 1 H Axe Bonus Rank10"
+},
+"1092943": {
+"class": "barbarian",
+"name": "Weapon Expertise 1 H Mace Rank10"
+},
+"1092977": {
+"class": "barbarian",
+"name": "Weapon Expertise 1 H Sword Rank10"
+},
+"1092984": {
+"class": "barbarian",
+"name": "Weapon Expertise 2 H Axe Rank10"
+},
+"1092997": {
+"class": "barbarian",
+"name": "Weapon Expertise 2 H Mace Rank10"
+},
+"1092998": {
+"class": "barbarian",
+"name": "Weapon Expertise 2 H Polearm Rank10"
+},
+"1093000": {
+"class": "barbarian",
+"name": "Weapon Expertise 2 H Sword Rank10"
+},
+"1098169": {
+"class": "rogue",
+"name": "Talent Buildaround 01"
+},
+"1098618": {
+"class": "barbarian",
+"name": "unique Rare Spawn"
+},
+"111422": {
+"class": "sorcerer",
+"name": "Firewall"
+},
+"1189324": {
+"class": "rogue",
+"name": "Grenades"
+},
+"1196884": {
+"class": "rogue",
+"name": "Weapon Attack"
+},
+"1201192": {
+"class": "sorcerer",
+"name": "Weapon Attack"
+},
+"1201846": {
+"class": "necromancer",
+"name": "Weapon Attack"
+},
+"1202092": {
+"class": "druid",
+"name": "Dancing Bolts"
+},
+"1204385": {
+"class": "druid",
+"name": "Weapon Attack"
+},
+"1205333": {
+"class": "barbarian",
+"name": "Weapon Attack"
+},
+"1212513": {
+"class": "sorcerer",
+"name": "Mini Meteorite"
+},
+"1218742": {
+"class": "druid",
+"name": "Werewolf Pet Rabies"
+},
+"1223451": {
+"class": "druid",
+"name": "Vine Creeper Attack"
+},
+"1223457": {
+"class": "druid",
+"name": "Ravens Attack"
+},
+"1256958": {
+"class": "druid",
+"name": "Shred"
+},
+"1258399": {
+"class": "necromancer",
+"name": "Spawn Pets"
+},
+"1271767": {
+"class": "spiritborn",
+"name": "Passive"
+},
+"1285259": {
+"class": "rogue",
+"name": "Trapped"
+},
+"1299073": {
+"class": "rogue",
+"name": "Stealth Buff"
+},
+"1304803": {
+"class": "druid",
+"name": "Talent 15"
+},
+"1415961": {
+"class": "spiritborn",
+"name": "Invoke"
+},
+"143483": {
+"class": "sorcerer",
+"name": "Spark"
+},
+"1448953": {
+"class": "druid",
+"name": "Talent Hybrid T5 N3"
+},
+"1453965": {
+"class": "druid",
+"name": "Talent Hybrid T5 N5"
+},
+"1453975": {
+"class": "barbarian",
+"name": "Talent Berserker T5 N3"
+},
+"1453977": {
+"class": "barbarian",
+"name": "Talent Warlord T5 N3"
+},
+"1453980": {
+"class": "sorcerer",
+"name": "Talent Hybrid T3 N1"
+},
+"1453982": {
+"class": "sorcerer",
+"name": "Talent Hybrid T3 N2"
+},
+"1453992": {
+"class": "rogue",
+"name": "Talent Cunning T5 N3"
+},
+"1453994": {
+"class": "rogue",
+"name": "Talent Cunning T5 N4"
+},
+"1455665": {
+"class": "necromancer",
+"name": "Talent Hybrid T5 N1"
+},
+"1455668": {
+"class": "necromancer",
+"name": "Talent Hybrid T5 N2"
+},
+"146355": {
+"class": "sorcerer",
+"name": "Nova"
+},
+"1464264": {
+"class": "necromancer",
+"name": "Dread Scythe"
+},
+"1465268": {
+"class": "necromancer",
+"name": "Desecrated Ground"
+},
+"146743": {
+"class": "sorcerer",
+"name": "Hydra"
+},
+"147025": {
+"class": "sorcerer",
+"name": "Hydra Projectile Attack"
+},
+"1473878": {
+"class": "druid",
+"name": "Stone Burst"
+},
+"1489597": {
+"class": "spiritborn",
+"name": "Sky Basic"
+},
+"1489635": {
+"class": "spiritborn",
+"name": "Plains Mobility1"
+},
+"1489641": {
+"class": "spiritborn",
+"name": "Vortex"
+},
+"1489681": {
+"class": "spiritborn",
+"name": "Plains Defense"
+},
+"1497299": {
+"class": "sorcerer",
+"name": "Prismatic Shard"
+},
+"1519039": {
+"class": "spiritborn",
+"name": "Plains Basic"
+},
+"1519042": {
+"class": "spiritborn",
+"name": "Plains Mobility2"
+},
+"1519044": {
+"class": "spiritborn",
+"name": "Soil Control1"
+},
+"1519048": {
+"class": "spiritborn",
+"name": "Quill Volley"
+},
+"1519050": {
+"class": "spiritborn",
+"name": "Crushing Hand"
+},
+"1519052": {
+"class": "spiritborn",
+"name": "Soil Defense"
+},
+"1519055": {
+"class": "spiritborn",
+"name": "Soil Control2"
+},
+"1519059": {
+"class": "spiritborn",
+"name": "Forest Basic"
+},
+"1519061": {
+"class": "spiritborn",
+"name": "Soil Basic"
+},
+"1519076": {
+"class": "spiritborn",
+"name": "Sky Offense2"
+},
+"1520892": {
+"class": "barbarian",
+"name": "Proc Ancient Mode"
+},
+"153249": {
+"class": "sorcerer",
+"name": "Fire Bolt"
+},
+"1559807": {
+"class": "spiritborn",
+"name": "Plains Mobility1 Recast"
+},
+"156208": {
+"class": "sorcerer",
+"name": "Talent Elemental T1 N3"
+},
+"156211": {
+"class": "sorcerer",
+"name": "Talent Elemental T2 N2"
+},
+"156217": {
+"class": "sorcerer",
+"name": "Talent Fire T1 N1"
+},
+"156220": {
+"class": "sorcerer",
+"name": "Talent Fire T3 N1"
+},
+"156224": {
+"class": "sorcerer",
+"name": "Talent Elemental T2 N1"
+},
+"156225": {
+"class": "sorcerer",
+"name": "Talent Elemental T1 N2"
+},
+"156227": {
+"class": "sorcerer",
+"name": "Talent Lightning T2 N1"
+},
+"156229": {
+"class": "sorcerer",
+"name": "Talent Lightning T2 N2"
+},
+"156230": {
+"class": "sorcerer",
+"name": "Talent Cold T1 N1"
+},
+"156232": {
+"class": "sorcerer",
+"name": "Talent Cold T3 N1"
+},
+"156233": {
+"class": "sorcerer",
+"name": "Talent Elemental T1 N1"
+},
+"156234": {
+"class": "sorcerer",
+"name": "Talent Lightning T3 N2"
+},
+"156235": {
+"class": "sorcerer",
+"name": "Talent Lightning T1 N2"
+},
+"1603615": {
+"class": "spiritborn",
+"name": "Sky Offense2 Recast"
+},
+"1611316": {
+"class": "barbarian",
+"name": "Mighty Throw"
+},
+"1619032": {
+"class": "spiritborn",
+"name": "Weapon Attack"
+},
+"1627075": {
+"class": "sorcerer",
+"name": "Familiars"
+},
+"1631672": {
+"class": "spiritborn",
+"name": "Soil Core"
+},
+"1640931": {
+"class": "spiritborn",
+"name": "Rake"
+},
+"1642162": {
+"class": "spiritborn",
+"name": "Talent Combo Soil Sky"
+},
+"1642165": {
+"class": "spiritborn",
+"name": "Talent Combo Sky Plains"
+},
+"1642167": {
+"class": "spiritborn",
+"name": "Talent Combo Sky Forest"
+},
+"1642169": {
+"class": "spiritborn",
+"name": "Talent Combo Plains Soil"
+},
+"1642171": {
+"class": "spiritborn",
+"name": "Talent Combo Forest Plains"
+},
+"1642173": {
+"class": "spiritborn",
+"name": "Talent Combo Soil Forest"
+},
+"1644584": {
+"class": "necromancer",
+"name": "Soulrift"
+},
+"1647135": {
+"class": "sorcerer",
+"name": "Incinerate Split"
+},
+"1648342": {
+"class": "spiritborn",
+"name": "Talent Forest 1"
+},
+"1648344": {
+"class": "spiritborn",
+"name": "Talent Forest 2"
+},
+"1648346": {
+"class": "spiritborn",
+"name": "Talent Forest 3"
+},
+"1648348": {
+"class": "spiritborn",
+"name": "Talent Forest 4"
+},
+"1648350": {
+"class": "spiritborn",
+"name": "Talent Plains 1"
+},
+"1648352": {
+"class": "spiritborn",
+"name": "Talent Plains 2"
+},
+"1648354": {
+"class": "spiritborn",
+"name": "Talent Plains 3"
+},
+"1648356": {
+"class": "spiritborn",
+"name": "Talent Plains 4"
+},
+"1648358": {
+"class": "spiritborn",
+"name": "Talent Sky 1"
+},
+"1648360": {
+"class": "spiritborn",
+"name": "Talent Sky 2"
+},
+"1648362": {
+"class": "spiritborn",
+"name": "Talent Sky 3"
+},
+"1648364": {
+"class": "spiritborn",
+"name": "Talent Sky 4"
+},
+"1648366": {
+"class": "spiritborn",
+"name": "Talent Soil 1"
+},
+"1648368": {
+"class": "spiritborn",
+"name": "Talent Soil 2"
+},
+"1648370": {
+"class": "spiritborn",
+"name": "Talent Soil 3"
+},
+"1648372": {
+"class": "spiritborn",
+"name": "Talent Soil 4"
+},
+"1648374": {
+"class": "spiritborn",
+"name": "Talent Generic 1"
+},
+"1648376": {
+"class": "spiritborn",
+"name": "Talent Generic 2"
+},
+"1648378": {
+"class": "spiritborn",
+"name": "Talent Generic 3"
+},
+"1648380": {
+"class": "spiritborn",
+"name": "Talent Generic 4"
+},
+"1648385": {
+"class": "spiritborn",
+"name": "Talent Ultimate 1"
+},
+"1648387": {
+"class": "spiritborn",
+"name": "Talent Ultimate 2"
+},
+"1648389": {
+"class": "spiritborn",
+"name": "Talent Ultimate 3"
+},
+"1648391": {
+"class": "spiritborn",
+"name": "Talent Ultimate 4"
+},
+"1648393": {
+"class": "spiritborn",
+"name": "Supremacy"
+},
+"1648395": {
+"class": "spiritborn",
+"name": "Intricacy"
+},
+"1648398": {
+"class": "spiritborn",
+"name": "Talent Ultimate 7"
+},
+"1648400": {
+"class": "spiritborn",
+"name": "Talent Ultimate 8"
+},
+"1648402": {
+"class": "spiritborn",
+"name": "Talent Ultimate 9"
+},
+"1648404": {
+"class": "spiritborn",
+"name": "Talent Ultimate 10"
+},
+"1648406": {
+"class": "spiritborn",
+"name": "Talent Ultimate 11"
+},
+"1648408": {
+"class": "spiritborn",
+"name": "Talent Ultimate 12"
+},
+"165023": {
+"class": "sorcerer",
+"name": "Fireball"
+},
+"1651226": {
+"class": "necromancer",
+"name": "Skeleton Warrior Scythe Attack shadow"
+},
+"1651228": {
+"class": "necromancer",
+"name": "Skeleton Warrior Scythe Two Hand Attack Shadow"
+},
+"1651230": {
+"class": "necromancer",
+"name": "Skeleton Warrior Sword Attack Shadow"
+},
+"1651240": {
+"class": "necromancer",
+"name": "Skeleton Warrior Shield Attack Shadow"
+},
+"1663204": {
+"class": "spiritborn",
+"name": "The Seeker"
+},
+"1663206": {
+"class": "spiritborn",
+"name": "The Hunter"
+},
+"1663208": {
+"class": "spiritborn",
+"name": "The Protector"
+},
+"1663210": {
+"class": "spiritborn",
+"name": "The Devourer"
+},
+"166341": {
+"class": "sorcerer",
+"name": "Talent Fire T2 N3"
+},
+"1672125": {
+"class": "rogue",
+"name": "Parting Gift"
+},
+"167341": {
+"class": "sorcerer",
+"name": "Flame Shield"
+},
+"1673879": {
+"class": "rogue",
+"name": "Parting Gift Recast"
+},
+"168572": {
+"class": "sorcerer",
+"name": "Talent Fire T2 N2"
+},
+"1690398": {
+"class": "rogue",
+"name": "Dance Of Knives"
+},
+"169887": {
+"class": "sorcerer",
+"name": "Talent Lightning T1 N1"
+},
+"171610": {
+"class": "sorcerer",
+"name": "Talent Fire T1 N2"
+},
+"171937": {
+"class": "sorcerer",
+"name": "Charged Bolts"
+},
+"1722900": {
+"class": "spiritborn",
+"name": "Talent Ultimate 1 Alternate"
+},
+"172459": {
+"class": "sorcerer",
+"name": "Talent Elemental T2 N3"
+},
+"172497": {
+"class": "sorcerer",
+"name": "Talent Fire T2 N1"
+},
+"172509": {
+"class": "sorcerer",
+"name": "Talent Cold T1 N2"
+},
+"1730677": {
+"class": "spiritborn",
+"name": "Talent Generic 5"
+},
+"1730680": {
+"class": "spiritborn",
+"name": "Talent Generic 6"
+},
+"1730682": {
+"class": "spiritborn",
+"name": "Talent Generic 7"
+},
+"1730684": {
+"class": "spiritborn",
+"name": "Talent Generic 8"
+},
+"1817045": {
+"class": "spiritborn",
+"name": "Rock Splitter"
+},
+"1834471": {
+"class": "spiritborn",
+"name": "Withering Fist"
+},
+"1834473": {
+"class": "spiritborn",
+"name": "Thrash"
+},
+"1834476": {
+"class": "spiritborn",
+"name": "Thunderspike"
+},
+"1836008": {
+"class": "spiritborn",
+"name": "Stinger"
+},
+"184600": {
+"class": "barbarian",
+"name": "War Cry (Alt)"
+},
+"1858114": {
+"class": "spiritborn",
+"name": "Centipede Ruler Spawn"
+},
+"1858262": {
+"class": "spiritborn",
+"name": "Centipede Ruler Projectile Attack"
+},
+"1859218": {
+"class": "spiritborn",
+"name": "Centipede Ruler Breath Attack"
+},
+"1862773": {
+"class": "spiritborn",
+"name": "Ravager"
+},
+"186358": {
+"class": "barbarian",
+"name": "Ground Stomp"
+},
+"1871761": {
+"class": "spiritborn",
+"name": "Rushing Claw"
+},
+"1871764": {
+"class": "spiritborn",
+"name": "Armored Hide"
+},
+"1871801": {
+"class": "spiritborn",
+"name": "Scourge"
+},
+"1871807": {
+"class": "spiritborn",
+"name": "Razor Wings"
+},
+"1871809": {
+"class": "spiritborn",
+"name": "Touch Of Death"
+},
+"1871813": {
+"class": "spiritborn",
+"name": "Toxic Skin"
+},
+"1871819": {
+"class": "spiritborn",
+"name": "Counterattack"
+},
+"1871821": {
+"class": "spiritborn",
+"name": "Soar"
+},
+"1871823": {
+"class": "spiritborn",
+"name": "Payback"
+},
+"1871825": {
+"class": "spiritborn",
+"name": "Concussive Stomp"
+},
+"1879127": {
+"class": "druid",
+"name": "Tectonic"
+},
+"1898083": {
+"class": "spiritborn",
+"name": "Jaguar Focus2"
+},
+"1920204": {
+"class": "spiritborn",
+"name": "Talent Key Passive 1"
+},
+"1920209": {
+"class": "spiritborn",
+"name": "Talent Key Passive 3"
+},
+"1920211": {
+"class": "spiritborn",
+"name": "Talent Key Passive 4"
+},
+"1922219": {
+"class": "rogue",
+"name": "Arrow Storm"
+},
+"1934191": {
+"class": "sorcerer",
+"name": "Familiar Attack"
+},
+"194096": {
+"class": "barbarian",
+"name": "War Cry"
+},
+"1954307": {
+"class": "sorcerer",
+"name": "Familiar Teleport"
+},
+"1955290": {
+"class": "sorcerer",
+"name": "Familiar Target Random"
+},
+"1955450": {
+"class": "spiritborn",
+"name": "Talent Key Passive 5"
+},
+"196545": {
+"class": "barbarian",
+"name": "Leap"
+},
+"1973722": {
+"class": "spiritborn",
+"name": "Swarm"
+},
+"1974985": {
+"class": "spiritborn",
+"name": "Feather Pickup"
+},
+"1975049": {
+"class": "spiritborn",
+"name": "Feather Spawn"
+},
+"1977071": {
+"class": "necromancer",
+"name": "Blood Mist Evade Legendary"
+},
+"1978001": {
+"class": "spiritborn",
+"name": "Rune Area"
+},
+"1985465": {
+"class": "necromancer",
+"name": "Golem Iron Active Slam Leap"
+},
+"1989525": {
+"class": "necromancer",
+"name": "Golem Active Leap"
+},
+"199206": {
+"class": "barbarian",
+"name": "Leap (Alt)"
+},
+"199516": {
+"class": "barbarian",
+"name": "Kick"
+},
+"200765": {
+"class": "barbarian",
+"name": "Bash"
+},
+"200787": {
+"class": "barbarian",
+"name": "Flay"
+},
+"201633": {
+"class": "barbarian",
+"name": "Iron Skin"
+},
+"2020423": {
+"class": "spiritborn",
+"name": "Soar Override"
+},
+"202484": {
+"class": "barbarian",
+"name": "Upheaval"
+},
+"203177": {
+"class": "barbarian",
+"name": "Charge"
+},
+"203268": {
+"class": "barbarian",
+"name": "Double Swing"
+},
+"204450": {
+"class": "barbarian",
+"name": "Challenging Shout"
+},
+"204513": {
+"class": "barbarian",
+"name": "Call Of The Ancients"
+},
+"204662": {
+"class": "barbarian",
+"name": "Rallying Cry"
+},
+"206432": {
+"class": "barbarian",
+"name": "Frenzy"
+},
+"206435": {
+"class": "barbarian",
+"name": "Whirlwind"
+},
+"206504": {
+"class": "barbarian",
+"name": "Lunging Strike"
+},
+"2074903": {
+"class": "necromancer",
+"name": "Talent 11"
+},
+"2075107": {
+"class": "rogue",
+"name": "Talent Cunning T1 N3"
+},
+"2075140": {
+"class": "rogue",
+"name": "Talent Discipline T4 N4"
+},
+"2075148": {
+"class": "necromancer",
+"name": "Talent 12"
+},
+"2075705": {
+"class": "druid",
+"name": "Talent 16"
+},
+"2075710": {
+"class": "druid",
+"name": "Talent 17"
+},
+"2075735": {
+"class": "barbarian",
+"name": "Talent 11"
+},
+"2075737": {
+"class": "barbarian",
+"name": "Talent 12"
+},
+"207827": {
+"class": "barbarian",
+"name": "Death Blow"
+},
+"207895": {
+"class": "barbarian",
+"name": "Iron Maelstrom (Alt)"
+},
+"208000": {
+"class": "barbarian",
+"name": "Double Swing"
+},
+"2082021": {
+"class": "paladin",
+"name": "Blessed Shield"
+},
+"208333": {
+"class": "barbarian",
+"name": "Rend"
+},
+"208499": {
+"class": "barbarian",
+"name": "Rupture"
+},
+"208683": {
+"class": "barbarian",
+"name": "Mighty Throw (Alt)"
+},
+"2087548": {
+"class": "paladin",
+"name": "Shield Bash"
+},
+"2087710": {
+"class": "paladin",
+"name": "Zeal"
+},
+"2091156": {
+"class": "barbarian",
+"name": "Talent 13"
+},
+"2091159": {
+"class": "barbarian",
+"name": "Talent 14"
+},
+"2091164": {
+"class": "druid",
+"name": "Talent 18"
+},
+"2091166": {
+"class": "druid",
+"name": "Talent 19"
+},
+"2092223": {
+"class": "necromancer",
+"name": "Talent 13"
+},
+"2092225": {
+"class": "necromancer",
+"name": "Talent 14"
+},
+"2092249": {
+"class": "rogue",
+"name": "Talent 11"
+},
+"2092251": {
+"class": "rogue",
+"name": "Talent 12"
+},
+"2093631": {
+"class": "sorcerer",
+"name": "Talent 11"
+},
+"2093633": {
+"class": "sorcerer",
+"name": "Talent 12"
+},
+"2093635": {
+"class": "sorcerer",
+"name": "Talent 13"
+},
+"2093637": {
+"class": "sorcerer",
+"name": "Talent 14"
+},
+"2097337": {
+"class": "paladin",
+"name": "Cross Slash"
+},
+"2097465": {
+"class": "paladin",
+"name": "Clash"
+},
+"2100457": {
+"class": "paladin",
+"name": "Spear Of The Heavens"
+},
+"2103511": {
+"class": "paladin",
+"name": "Banner"
+},
+"210431": {
+"class": "barbarian",
+"name": "Maim"
+},
+"2104413": {
+"class": "paladin",
+"name": "Collapse"
+},
+"210670": {
+"class": "barbarian",
+"name": "Steel Grasp (Alt)"
+},
+"2106904": {
+"class": "paladin",
+"name": "Falling Star"
+},
+"2107555": {
+"class": "paladin",
+"name": "Blessed Hammer"
+},
+"210919": {
+"class": "barbarian",
+"name": "Frenzy"
+},
+"2110174": {
+"class": "spiritborn",
+"name": "Talent Generic 9"
+},
+"2110217": {
+"class": "spiritborn",
+"name": "Talent Sky 5"
+},
+"2110231": {
+"class": "spiritborn",
+"name": "Talent Generic 10"
+},
+"2117613": {
+"class": "paladin",
+"name": "Shield Charge"
+},
+"211871": {
+"class": "barbarian",
+"name": "Wrath Of The Berserker"
+},
+"211938": {
+"class": "barbarian",
+"name": "Challenging Shout (Alt)"
+},
+"2120228": {
+"class": "paladin",
+"name": "Divine Lance"
+},
+"2126021": {
+"class": "paladin",
+"name": "Phalanx"
+},
+"2126110": {
+"class": "paladin",
+"name": "Phalanx Attack"
+},
+"212712": {
+"class": "barbarian",
+"name": "Talent Berserker T1 N1"
+},
+"212731": {
+"class": "barbarian",
+"name": "Talent Berserker T1 N2"
+},
+"212832": {
+"class": "barbarian",
+"name": "Talent Berserker T2 N2"
+},
+"212867": {
+"class": "barbarian",
+"name": "Talent Berserker T2 N3"
+},
+"213021": {
+"class": "barbarian",
+"name": "Talent Berserker T3 N1"
+},
+"213077": {
+"class": "barbarian",
+"name": "Talent Berserker T3 N2"
+},
+"213153": {
+"class": "barbarian",
+"name": "Talent Berserker T4 N1"
+},
+"2132824": {
+"class": "paladin",
+"name": "Zeal"
+},
+"213673": {
+"class": "barbarian",
+"name": "Hammer Of Ancients"
+},
+"213811": {
+"class": "barbarian",
+"name": "Talent Berserker T4 N2"
+},
+"213812": {
+"class": "barbarian",
+"name": "Proc Berserk"
+},
+"213949": {
+"class": "barbarian",
+"name": "Talent Berserker T3 N3"
+},
+"213961": {
+"class": "barbarian",
+"name": "Talent Berserker T5 N1"
+},
+"213966": {
+"class": "barbarian",
+"name": "Talent Berserker T5 N2"
+},
+"214020": {
+"class": "barbarian",
+"name": "Talent Warlord T1 N1"
+},
+"214021": {
+"class": "barbarian",
+"name": "Talent Warlord T1 N2"
+},
+"2140400": {
+"class": "rogue",
+"name": "Talent 13"
+},
+"2145580": {
+"class": "paladin",
+"name": "Hell Banner"
+},
+"214786": {
+"class": "barbarian",
+"name": "Rend"
+},
+"215027": {
+"class": "barbarian",
+"name": "Rupture"
+},
+"2153119": {
+"class": "paladin",
+"name": "Phalanx Charge Attack Lunge"
+},
+"215518": {
+"class": "barbarian",
+"name": "Talent Warlord T2 N1"
+},
+"215519": {
+"class": "barbarian",
+"name": "Talent Warlord T2 N2"
+},
+"216116": {
+"class": "barbarian",
+"name": "Talent Warlord T2 N3"
+},
+"216222": {
+"class": "barbarian",
+"name": "Talent Warlord T3 N1"
+},
+"216365": {
+"class": "barbarian",
+"name": "Talent Warlord T3 N2"
+},
+"2164252": {
+"class": "warlock",
+"name": "Fissure"
+},
+"216535": {
+"class": "barbarian",
+"name": "Talent Warlord T4 N1"
+},
+"216608": {
+"class": "barbarian",
+"name": "Talent Warlord T4 N2"
+},
+"216638": {
+"class": "barbarian",
+"name": "Talent Warlord T5 N1"
+},
+"216644": {
+"class": "barbarian",
+"name": "Talent Warlord T5 N2"
+},
+"217121": {
+"class": "barbarian",
+"name": "Talent Warlord T3 N3"
+},
+"217175": {
+"class": "barbarian",
+"name": "Iron Maelstrom"
+},
+"2174078": {
+"class": "paladin",
+"name": "Holy Bolt"
+},
+"218754": {
+"class": "barbarian",
+"name": "Talent Berserker T4 N3"
+},
+"2187578": {
+"class": "paladin",
+"name": "Defiance Aura"
+},
+"2187741": {
+"class": "paladin",
+"name": "Fanaticism Aura"
+},
+"2212801": {
+"class": "warlock",
+"name": "Summon Lunatic"
+},
+"2213860": {
+"class": "warlock",
+"name": "Burning Skull"
+},
+"2214419": {
+"class": "warlock",
+"name": "Demonic Breath"
+},
+"2214468": {
+"class": "warlock",
+"name": "demon mega fire breath"
+},
+"2214604": {
+"class": "warlock",
+"name": "Demonform"
+},
+"2215096": {
+"class": "warlock",
+"name": "Arch Demon"
+},
+"2215258": {
+"class": "warlock",
+"name": "Brimstone Orb"
+},
+"2215698": {
+"class": "warlock",
+"name": "Orb death"
+},
+"2216322": {
+"class": "rogue",
+"name": "Talent Discipline T4 N5"
+},
+"2216334": {
+"class": "warlock",
+"name": "Hell Storm"
+},
+"2217881": {
+"class": "warlock",
+"name": "Shadowform"
+},
+"2218200": {
+"class": "warlock",
+"name": "Chain Lash"
+},
+"2218204": {
+"class": "warlock",
+"name": "Hex Cast"
+},
+"2218209": {
+"class": "warlock",
+"name": "Sigil Of Shadows"
+},
+"2218211": {
+"class": "warlock",
+"name": "Wraith Step"
+},
+"2218213": {
+"class": "warlock",
+"name": "Sigil Of Flames"
+},
+"2221240": {
+"class": "warlock",
+"name": "Sigil Of Summons"
+},
+"2221242": {
+"class": "warlock",
+"name": "Sigil Of Calamity"
+},
+"2221260": {
+"class": "warlock",
+"name": "Doombringer"
+},
+"2221282": {
+"class": "warlock",
+"name": "Demonic Slash"
+},
+"2221425": {
+"class": "warlock",
+"name": "demon mega attack"
+},
+"2226109": {
+"class": "paladin",
+"name": "Condemn"
+},
+"2227460": {
+"class": "warlock",
+"name": "Hex Debuff"
+},
+"2227865": {
+"class": "warlock",
+"name": "demon swarmer melee bite"
+},
+"2228435": {
+"class": "warlock",
+"name": "Demon Wall"
+},
+"2228495": {
+"class": "warlock",
+"name": "fallen brute attack close"
+},
+"2229208": {
+"class": "paladin",
+"name": "Oath Angel"
+},
+"2236714": {
+"class": "warlock",
+"name": "Weapon Attack"
+},
+"2244457": {
+"class": "warlock",
+"name": "Ultimate Demon"
+},
+"2244516": {
+"class": "warlock",
+"name": "Class Mechanic Legion"
+},
+"2245719": {
+"class": "warlock",
+"name": "Demonic Bombard"
+},
+"2245730": {
+"class": "warlock",
+"name": "Demon Defender"
+},
+"2256888": {
+"class": "paladin",
+"name": "Paladin Evade"
+},
+"2259408": {
+"class": "warlock",
+"name": "wyrm spew"
+},
+"2261363": {
+"class": "paladin",
+"name": "Oath Juggernaut"
+},
+"2261380": {
+"class": "paladin",
+"name": "Purify"
+},
+"2263340": {
+"class": "paladin",
+"name": "Sub Judgement"
+},
+"2264962": {
+"class": "paladin",
+"name": "Oath Judgement"
+},
+"2265693": {
+"class": "paladin",
+"name": "Brandish"
+},
+"2268315": {
+"class": "warlock",
+"name": "Summoned Animating Ground"
+},
+"2273081": {
+"class": "paladin",
+"name": "Heaven’s Fury"
+},
+"2273665": {
+"class": "paladin",
+"name": "Oath Zealot"
+},
+"2283781": {
+"class": "paladin",
+"name": "Consecration"
+},
+"2286655": {
+"class": "warlock",
+"name": "Demon Taunt"
+},
+"2289181": {
+"class": "warlock",
+"name": "demon ult attack"
+},
+"2289261": {
+"class": "warlock",
+"name": "Demonic Drain"
+},
+"2289280": {
+"class": "warlock",
+"name": "demon succubus attack"
+},
+"2292204": {
+"class": "paladin",
+"name": "Aegis"
+},
+"2297097": {
+"class": "paladin",
+"name": "Holy Light Aura"
+},
+"2297125": {
+"class": "paladin",
+"name": "Arbiter Of Justice"
+},
+"2301078": {
+"class": "paladin",
+"name": "Fortress"
+},
+"2301447": {
+"class": "warlock",
+"name": "Demonic Grasp"
+},
+"2302974": {
+"class": "paladin",
+"name": "Zenith"
+},
+"2303677": {
+"class": "paladin",
+"name": "Rally"
+},
+"2306453": {
+"class": "paladin",
+"name": "Trinity Cast 3"
+},
+"2308148": {
+"class": "warlock",
+"name": "Class Mechanic Vanguard"
+},
+"2308152": {
+"class": "warlock",
+"name": "Class Mechanic Mastermind"
+},
+"2312823": {
+"class": "paladin",
+"name": "Disciple Land"
+},
+"2315443": {
+"class": "warlock",
+"name": "Class Mechanic Legion B"
+},
+"2315529": {
+"class": "warlock",
+"name": "Class Mechanic Legion A"
+},
+"2315539": {
+"class": "warlock",
+"name": "Class Mechanic Legion C"
+},
+"2316236": {
+"class": "warlock",
+"name": "Class Mechanic Ritualist"
+},
+"2316242": {
+"class": "warlock",
+"name": "Class Mechanic Mastermind B"
+},
+"2316249": {
+"class": "warlock",
+"name": "Class Mechanic Mastermind A"
+},
+"2316254": {
+"class": "warlock",
+"name": "Class Mechanic Mastermind C"
+},
+"2316266": {
+"class": "warlock",
+"name": "Class Mechanic Vanguard A"
+},
+"2316268": {
+"class": "warlock",
+"name": "Class Mechanic Vanguard B"
+},
+"2316270": {
+"class": "warlock",
+"name": "Class Mechanic Vanguard C"
+},
+"2316272": {
+"class": "warlock",
+"name": "Class Mechanic Ritualist A"
+},
+"2316274": {
+"class": "warlock",
+"name": "Class Mechanic Ritualist B"
+},
+"2316278": {
+"class": "warlock",
+"name": "Class Mechanic Ritualist C"
+},
+"2329865": {
+"class": "paladin",
+"name": "Advance"
+},
+"2332386": {
+"class": "warlock",
+"name": "Eviscerated Debuff"
+},
+"2334687": {
+"class": "warlock",
+"name": "Ultimate Basic"
+},
+"2343774": {
+"class": "paladin",
+"name": "Weapon Attack"
+},
+"2356368": {
+"class": "warlock",
+"name": "Demon Wall Summoned Animating Magical"
+},
+"2356370": {
+"class": "warlock",
+"name": "Demon Wall Death"
+},
+"2356372": {
+"class": "warlock",
+"name": "Demon Wall attack close"
+},
+"2356956": {
+"class": "warlock",
+"name": "Demon Wall Neutral B"
+},
+"2360526": {
+"class": "paladin",
+"name": "Sub Angel"
+},
+"2362053": {
+"class": "paladin",
+"name": "Aura Controller"
+},
+"2369151": {
+"class": "spiritborn",
+"name": "Lightning Storm"
+},
+"238180": {
+"class": "druid",
+"name": "Resource Charges TEMP"
+},
+"238345": {
+"class": "druid",
+"name": "Boulder"
+},
+"2384649": {
+"class": "warlock",
+"name": "Summoned Animating Ground Portal"
+},
+"2385787": {
+"class": "warlock",
+"name": "Shadow Shred"
+},
+"2388486": {
+"class": "warlock",
+"name": "demon ult attack basic"
+},
+"2393192": {
+"class": "paladin",
+"name": "Sub Spear"
+},
+"2393346": {
+"class": "paladin",
+"name": "Talent Generic 01"
+},
+"2393351": {
+"class": "paladin",
+"name": "Talent Juggernaut 01"
+},
+"2393354": {
+"class": "paladin",
+"name": "Unlock Talent Defense 2"
+},
+"2395002": {
+"class": "paladin",
+"name": "Sub Retribution"
+},
+"2395451": {
+"class": "warlock",
+"name": "Summon Vanguard Demon"
+},
+"2401357": {
+"class": "paladin",
+"name": "Sub Holy Shield"
+},
+"2412609": {
+"class": "paladin",
+"name": "Talent Defense 1"
+},
+"2412611": {
+"class": "paladin",
+"name": "Talent Core 1"
+},
+"2412710": {
+"class": "paladin",
+"name": "Talent Core 2"
+},
+"2414509": {
+"class": "paladin",
+"name": "Talent Defense 2"
+},
+"2414643": {
+"class": "warlock",
+"name": "Brimstone"
+},
+"2418214": {
+"class": "warlock",
+"name": "Chain Totem"
+},
+"2418247": {
+"class": "paladin",
+"name": "Talent Justice 01"
+},
+"2418250": {
+"class": "paladin",
+"name": "Talent Justice 02"
+},
+"2418258": {
+"class": "paladin",
+"name": "Talent Valor 01"
+},
+"2418285": {
+"class": "paladin",
+"name": "Talent Arbiter 01"
+},
+"2418288": {
+"class": "paladin",
+"name": "Talent Arbiter 02"
+},
+"2418302": {
+"class": "paladin",
+"name": "Talent Arbiter 03"
+},
+"2420679": {
+"class": "warlock",
+"name": "Tail Whip"
+},
+"2420799": {
+"class": "paladin",
+"name": "Talent Auras 1"
+},
+"2420801": {
+"class": "paladin",
+"name": "Talent Auras 2"
+},
+"2420803": {
+"class": "paladin",
+"name": "Talent Auras 3"
+},
+"2420809": {
+"class": "paladin",
+"name": "Talent Auras 4"
+},
+"2420811": {
+"class": "paladin",
+"name": "Talent Auras 5"
+},
+"2420815": {
+"class": "paladin",
+"name": "Talent Auras 6"
+},
+"2420825": {
+"class": "paladin",
+"name": "Talent Justice 11"
+},
+"2420827": {
+"class": "paladin",
+"name": "Talent Justice 12"
+},
+"2420829": {
+"class": "paladin",
+"name": "Talent Valor 04"
+},
+"2424438": {
+"class": "warlock",
+"name": "Command Vanguard Demon"
+},
+"2424576": {
+"class": "warlock",
+"name": "Hellound Attack"
+},
+"2425846": {
+"class": "paladin",
+"name": "Talent Valor 05"
+},
+"2425877": {
+"class": "paladin",
+"name": "Talent Key Passive 1"
+},
+"2425896": {
+"class": "paladin",
+"name": "Talent Key Passive 2"
+},
+"2425899": {
+"class": "paladin",
+"name": "Talent Key Passive 3"
+},
+"2425903": {
+"class": "paladin",
+"name": "Talent Key Passive 4"
+},
+"2426028": {
+"class": "paladin",
+"name": "Talent Valor 07"
+},
+"2426097": {
+"class": "paladin",
+"name": "Talent Justice 03"
+},
+"2426103": {
+"class": "paladin",
+"name": "Talent Justice 04"
+},
+"2426105": {
+"class": "paladin",
+"name": "Talent Justice 13"
+},
+"2426120": {
+"class": "paladin",
+"name": "Talent Justice 06"
+},
+"2426241": {
+"class": "paladin",
+"name": "Talent Valor 10"
+},
+"2426348": {
+"class": "paladin",
+"name": "Talent Valor 08"
+},
+"2426377": {
+"class": "paladin",
+"name": "Talent Valor 09"
+},
+"2426433": {
+"class": "warlock",
+"name": "Summon Mastermind Demon"
+},
+"2428312": {
+"class": "warlock",
+"name": "Summon Legion Demon"
+},
+"2428314": {
+"class": "warlock",
+"name": "Summon Ritualist Demon"
+},
+"2429913": {
+"class": "sorcerer",
+"name": "Ice Blades Upgrade B Attack"
+},
+"2432678": {
+"class": "warlock",
+"name": "Legion Demon Basic Attack"
+},
+"2450160": {
+"class": "warlock",
+"name": "Legion Demon spit attack"
+},
+"2456540": {
+"class": "warlock",
+"name": "Command Legion Demon"
+},
+"2462578": {
+"class": "warlock",
+"name": "Vile Child Melee"
+},
+"2466034": {
+"class": "rogue",
+"name": "Dance Of Knives Pickup"
+},
+"2466077": {
+"class": "paladin",
+"name": "Shield Charge"
+},
+"2469892": {
+"class": "warlock",
+"name": "Command Ritualist Demon"
+},
+"2471034": {
+"class": "warlock",
+"name": "Command Mastermind Demon"
+},
+"2471052": {
+"class": "paladin",
+"name": "Talent Justice 07"
+},
+"2471056": {
+"class": "paladin",
+"name": "Talent Justice 08"
+},
+"2471058": {
+"class": "paladin",
+"name": "Talent Justice 09"
+},
+"2471066": {
+"class": "paladin",
+"name": "Talent Justice 10"
+},
+"2471112": {
+"class": "paladin",
+"name": "Talent Valor 02"
+},
+"2471115": {
+"class": "paladin",
+"name": "Talent Valor 03"
+},
+"2471117": {
+"class": "paladin",
+"name": "Talent Valor 06"
+},
+"2471122": {
+"class": "paladin",
+"name": "Talent Valor 11"
+},
+"2471232": {
+"class": "paladin",
+"name": "Talent Justice 05"
+},
+"2472127": {
+"class": "paladin",
+"name": "Talent Ultimate 01"
+},
+"2472129": {
+"class": "paladin",
+"name": "Talent Ultimate 02"
+},
+"2472131": {
+"class": "paladin",
+"name": "Talent Ultimate 03"
+},
+"2472133": {
+"class": "paladin",
+"name": "Talent Ultimate 04"
+},
+"2472135": {
+"class": "paladin",
+"name": "Talent Ultimate 05"
+},
+"2488821": {
+"class": "warlock",
+"name": "Class Mechanic Ritualist Demon Command"
+},
+"2492561": {
+"class": "warlock",
+"name": "Hellhound Leap"
+},
+"2493092": {
+"class": "warlock",
+"name": "Summoned Ritualist Animating Ground"
+},
+"2493452": {
+"class": "warlock",
+"name": "Hellhound Dismount Mount Power"
+},
+"2493672": {
+"class": "warlock",
+"name": "Volatility"
+},
+"2503081": {
+"class": "barbarian",
+"name": "Iron Shrapnel"
+},
+"2506746": {
+"class": "barbarian",
+"name": "Iron Maelstrom Attack 1"
+},
+"2509441": {
+"class": "warlock",
+"name": "Summoned Legion Animating Ground"
+},
+"2513583": {
+"class": "warlock",
+"name": "Passive"
+},
+"2523858": {
+"class": "warlock",
+"name": "BSD Special Death"
+},
+"2528737": {
+"class": "warlock",
+"name": "demon brute swipe"
+},
+"2528743": {
+"class": "warlock",
+"name": "demon brute leap"
+},
+"2539060": {
+"class": "warlock",
+"name": "Summoned Mastermind Animating Ground"
+},
+"2547644": {
+"class": "warlock",
+"name": "Passive Attack Mastermind Demon"
+},
+"2549636": {
+"class": "warlock",
+"name": "Command Override"
+},
+"2553014": {
+"class": "warlock",
+"name": "Legion Demon explode attack"
+},
+"2553956": {
+"class": "druid",
+"name": "Grizzly Attack"
+},
+"2553973": {
+"class": "druid",
+"name": "Grizzly Battle Roar"
+},
+"2555133": {
+"class": "druid",
+"name": "Grizzly Debilitating Roar"
+},
+"2556791": {
+"class": "warlock",
+"name": "Summoned Vanguard Animating Ground"
+},
+"2572176": {
+"class": "warlock",
+"name": "Nether Step Override"
+},
+"2580666": {
+"class": "warlock",
+"name": "Lunatic Override"
+},
+"258243": {
+"class": "druid",
+"name": "Trample"
+},
+"2583524": {
+"class": "rogue",
+"name": "Shadow Clone Variant C Anim"
+},
+"2586215": {
+"class": "druid",
+"name": "Wolf Dash"
+},
+"258990": {
+"class": "druid",
+"name": "Hurricane"
+},
+"265663": {
+"class": "druid",
+"name": "Wolves"
+},
+"265971": {
+"class": "druid",
+"name": "Wolf Attack"
+},
+"266570": {
+"class": "druid",
+"name": "Cataclysm"
+},
+"267021": {
+"class": "druid",
+"name": "Grizzly Rage"
+},
+"272138": {
+"class": "druid",
+"name": "Pulverize"
+},
+"280119": {
+"class": "druid",
+"name": "Cyclone Armor"
+},
+"281516": {
+"class": "druid",
+"name": "Ravens"
+},
+"287256": {
+"class": "sorcerer",
+"name": "Frost Bolt"
+},
+"288106": {
+"class": "sorcerer",
+"name": "Teleport"
+},
+"288287": {
+"class": "druid",
+"name": "Talent Nature Magic T1 N2"
+},
+"289512": {
+"class": "druid",
+"name": "Talent Shapeshifting T3 N2"
+},
+"289513": {
+"class": "druid",
+"name": "Heightened Senses"
+},
+"289518": {
+"class": "druid",
+"name": "Talent Nature Magic T1 N1"
+},
+"290420": {
+"class": "druid",
+"name": "Talent Shapeshifting T2 N1"
+},
+"290475": {
+"class": "druid",
+"name": "Talent Shapeshifting T2 N2"
+},
+"290798": {
+"class": "druid",
+"name": "Talent Nature Magic T2 N2"
+},
+"290910": {
+"class": "druid",
+"name": "Talent Nature Magic T2 N1"
+},
+"290911": {
+"class": "druid",
+"name": "Talent Nature Magic T2 N3"
+},
+"290951": {
+"class": "druid",
+"name": "Talent Shapeshifting T1 N2"
+},
+"290954": {
+"class": "druid",
+"name": "Talent Shapeshifting T4 N2"
+},
+"290969": {
+"class": "druid",
+"name": "Quickshift"
+},
+"290971": {
+"class": "druid",
+"name": "Talent Shapeshifting T4 N3"
+},
+"291044": {
+"class": "druid",
+"name": "Talent Nature Magic T3 N1"
+},
+"291045": {
+"class": "druid",
+"name": "Talent Nature Magic T3 N2"
+},
+"291046": {
+"class": "druid",
+"name": "Talent Nature Magic T3 N3"
+},
+"291047": {
+"class": "druid",
+"name": "Talent Nature Magic T4 N1"
+},
+"291048": {
+"class": "druid",
+"name": "Talent Nature Magic T4 N2"
+},
+"291078": {
+"class": "druid",
+"name": "Talent Nature Magic T5 N1"
+},
+"291079": {
+"class": "druid",
+"name": "Talent Nature Magic T5 N2"
+},
+"291084": {
+"class": "druid",
+"name": "Talent Shapeshifting T5 N1"
+},
+"291085": {
+"class": "druid",
+"name": "Talent Shapeshifting T5 N2"
+},
+"291215": {
+"class": "sorcerer",
+"name": "Frost Nova"
+},
+"291347": {
+"class": "sorcerer",
+"name": "Frozen Orb"
+},
+"291403": {
+"class": "sorcerer",
+"name": "Blizzard"
+},
+"291492": {
+"class": "sorcerer",
+"name": "Ice Blade"
+},
+"291550": {
+"class": "sorcerer",
+"name": "Ice Blades Attack"
+},
+"291827": {
+"class": "sorcerer",
+"name": "Deep Freeze"
+},
+"292074": {
+"class": "sorcerer",
+"name": "Spear"
+},
+"292737": {
+"class": "sorcerer",
+"name": "Incinerate"
+},
+"292757": {
+"class": "sorcerer",
+"name": "Chain Lightning"
+},
+"292836": {
+"class": "sorcerer",
+"name": "Talent Cold T2 N1"
+},
+"293195": {
+"class": "sorcerer",
+"name": "Ice Shards"
+},
+"294198": {
+"class": "sorcerer",
+"name": "Inferno"
+},
+"296998": {
+"class": "sorcerer",
+"name": "Meteor"
+},
+"297039": {
+"class": "sorcerer",
+"name": "Ice Armor"
+},
+"297902": {
+"class": "sorcerer",
+"name": "Arc Lash"
+},
+"304065": {
+"class": "druid",
+"name": "Tornado"
+},
+"309070": {
+"class": "druid",
+"name": "Maul"
+},
+"309320": {
+"class": "druid",
+"name": "Storm Strike"
+},
+"309802": {
+"class": "barbarian",
+"name": "Callofthe Ancients"
+},
+"309850": {
+"class": "barbarian",
+"name": "Callofthe Ancients Leap"
+},
+"310676": {
+"class": "barbarian",
+"name": "Callofthe Ancients Whirlwind"
+},
+"311162": {
+"class": "barbarian",
+"name": "Callofthe Ancients Frenzy"
+},
+"313893": {
+"class": "druid",
+"name": "Landslide"
+},
+"314601": {
+"class": "druid",
+"name": "Poison Creeper"
+},
+"323105": {
+"class": "barbarian",
+"name": "Death Blow"
+},
+"333197": {
+"class": "sorcerer",
+"name": "Talent Fire T3 N2"
+},
+"333421": {
+"class": "druid",
+"name": "Earthen Bulwark"
+},
+"334217": {
+"class": "sorcerer",
+"name": "Talent Cold T2 N3"
+},
+"334224": {
+"class": "sorcerer",
+"name": "Talent Cold T2 N2"
+},
+"334380": {
+"class": "sorcerer",
+"name": "Talent Cold T3 N2"
+},
+"334677": {
+"class": "sorcerer",
+"name": "Talent Lightning T2 N3"
+},
+"334791": {
+"class": "sorcerer",
+"name": "Talent Lightning T3 N1"
+},
+"336238": {
+"class": "druid",
+"name": "Debilitating Roar"
+},
+"346247": {
+"class": "druid",
+"name": "Talent Shapeshifting T2 N3"
+},
+"346283": {
+"class": "druid",
+"name": "Talent Shapeshifting T3 N1"
+},
+"350820": {
+"class": "druid",
+"name": "Talent Nature Magic T4 N3"
+},
+"351722": {
+"class": "druid",
+"name": "Petrify"
+},
+"355606": {
+"class": "rogue",
+"name": "Shadow Step"
+},
+"355926": {
+"class": "rogue",
+"name": "Rapid Fire"
+},
+"356162": {
+"class": "rogue",
+"name": "Smoke Grenade"
+},
+"356394": {
+"class": "rogue",
+"name": "Mechanic Exposed Weakness"
+},
+"356587": {
+"class": "druid",
+"name": "Wind Shear"
+},
+"357628": {
+"class": "rogue",
+"name": "Shadow Clone"
+},
+"358339": {
+"class": "rogue",
+"name": "Flurry"
+},
+"358508": {
+"class": "rogue",
+"name": "Poison Imbuement"
+},
+"358761": {
+"class": "rogue",
+"name": "Dash"
+},
+"359246": {
+"class": "rogue",
+"name": "Cold Imbuement"
+},
+"360716": {
+"class": "rogue",
+"name": "Shadow Clone Passability"
+},
+"363402": {
+"class": "rogue",
+"name": "Heartseeker"
+},
+"364877": {
+"class": "rogue",
+"name": "Puncture"
+},
+"372248": {
+"class": "druid",
+"name": "Wolf Howl"
+},
+"375484": {
+"class": "barbarian",
+"name": "Rallying Cry (Alt)"
+},
+"377137": {
+"class": "rogue",
+"name": "Penetrating Shot"
+},
+"380288": {
+"class": "rogue",
+"name": "Shadow Imbuement"
+},
+"383339": {
+"class": "druid",
+"name": "Wolf Leap"
+},
+"389667": {
+"class": "rogue",
+"name": "Caltrop"
+},
+"391629": {
+"class": "rogue",
+"name": "Talent Discipline T1 N1"
+},
+"391662": {
+"class": "rogue",
+"name": "Talent Discipline T1 N2"
+},
+"391663": {
+"class": "rogue",
+"name": "Talent Discipline T2 N1"
+},
+"391664": {
+"class": "rogue",
+"name": "Talent Discipline T2 N2"
+},
+"391666": {
+"class": "rogue",
+"name": "Talent Discipline T3 N2"
+},
+"391667": {
+"class": "rogue",
+"name": "Talent Discipline T4 N1"
+},
+"391669": {
+"class": "rogue",
+"name": "Talent Discipline T5 N1"
+},
+"391670": {
+"class": "rogue",
+"name": "Talent Discipline T5 N2"
+},
+"391671": {
+"class": "rogue",
+"name": "Talent Cunning T1 N1"
+},
+"391673": {
+"class": "rogue",
+"name": "Talent Cunning T1 N2"
+},
+"391674": {
+"class": "rogue",
+"name": "Talent Cunning T2 N1"
+},
+"391675": {
+"class": "rogue",
+"name": "Talent Cunning T2 N2"
+},
+"391676": {
+"class": "rogue",
+"name": "Talent Cunning T3 N1"
+},
+"391677": {
+"class": "rogue",
+"name": "Talent Cunning T3 N2"
+},
+"391678": {
+"class": "rogue",
+"name": "Talent Cunning T4 N1"
+},
+"391679": {
+"class": "rogue",
+"name": "Talent Cunning T4 N2"
+},
+"391680": {
+"class": "rogue",
+"name": "Talent Cunning T5 N1"
+},
+"391681": {
+"class": "rogue",
+"name": "Talent Cunning T5 N2"
+},
+"391682": {
+"class": "rogue",
+"name": "Talent Mechanic T1 N1"
+},
+"391684": {
+"class": "rogue",
+"name": "Talent Mechanic T1 N2"
+},
+"391686": {
+"class": "rogue",
+"name": "Talent Mechanic T1 N3"
+},
+"391987": {
+"class": "rogue",
+"name": "Mechanic Exposed Weakness Apply"
+},
+"394251": {
+"class": "druid",
+"name": "Lacerate"
+},
+"398258": {
+"class": "rogue",
+"name": "Twisting Blade"
+},
+"399111": {
+"class": "rogue",
+"name": "Blade Shift"
+},
+"400232": {
+"class": "rogue",
+"name": "Rain Of Arrows"
+},
+"414638": {
+"class": "rogue",
+"name": "Talent Cunning T4 N3"
+},
+"416057": {
+"class": "rogue",
+"name": "Invigorating Strike"
+},
+"416272": {
+"class": "rogue",
+"name": "Forceful Arrow"
+},
+"416337": {
+"class": "druid",
+"name": "Rabies"
+},
+"416528": {
+"class": "rogue",
+"name": "Poison Trap"
+},
+"421161": {
+"class": "rogue",
+"name": "Death Trap"
+},
+"421353": {
+"class": "rogue",
+"name": "Death Trap Taunt"
+},
+"423126": {
+"class": "druid",
+"name": "Talent Hybrid T5 N1"
+},
+"423721": {
+"class": "rogue",
+"name": "Talent Discipline T3 N3"
+},
+"427557": {
+"class": "necromancer",
+"name": "Bone Splinters"
+},
+"432258": {
+"class": "necromancer",
+"name": "Bone Spear"
+},
+"432879": {
+"class": "necromancer",
+"name": "Bone Spear"
+},
+"432896": {
+"class": "necromancer",
+"name": "Reap"
+},
+"432897": {
+"class": "necromancer",
+"name": "Corpse Explosion"
+},
+"433402": {
+"class": "necromancer",
+"name": "Golem Control"
+},
+"434035": {
+"class": "necromancer",
+"name": "Decrepify"
+},
+"439581": {
+"class": "druid",
+"name": "Claw"
+},
+"439762": {
+"class": "rogue",
+"name": "Barrage"
+},
+"439912": {
+"class": "necromancer",
+"name": "Skeleton Warrior"
+},
+"440195": {
+"class": "necromancer",
+"name": "Skeleton Warrior Sword Attack"
+},
+"440313": {
+"class": "necromancer",
+"name": "Skeleton Mage"
+},
+"440325": {
+"class": "necromancer",
+"name": "Skeleton Mage Cold Attack"
+},
+"440403": {
+"class": "necromancer",
+"name": "Skeleton Priest"
+},
+"440463": {
+"class": "necromancer",
+"name": "Golem"
+},
+"440502": {
+"class": "necromancer",
+"name": "Skeleton Priest Frailty"
+},
+"440515": {
+"class": "necromancer",
+"name": "Golem Blood Attack"
+},
+"440535": {
+"class": "necromancer",
+"name": "Dark Ritual"
+},
+"443382": {
+"class": "necromancer",
+"name": "Command Skeletons"
+},
+"443409": {
+"class": "necromancer",
+"name": "Skeleton Warrior Shield Attack"
+},
+"444229": {
+"class": "necromancer",
+"name": "Skeleton Mage Bone Shards Attack"
+},
+"449251": {
+"class": "necromancer",
+"name": "Skeleton Warrior Sword Command"
+},
+"449318": {
+"class": "necromancer",
+"name": "Skeleton Warrior Shield Command"
+},
+"450073": {
+"class": "necromancer",
+"name": "Golem Corpse Active"
+},
+"463175": {
+"class": "necromancer",
+"name": "Decompose"
+},
+"463348": {
+"class": "necromancer",
+"name": "Miasma"
+},
+"463349": {
+"class": "necromancer",
+"name": "Corpse Tendrils"
+},
+"464715": {
+"class": "necromancer",
+"name": "Skeleton Mage Command"
+},
+"469641": {
+"class": "necromancer",
+"name": "Bone Spirit"
+},
+"481293": {
+"class": "necromancer",
+"name": "Blight"
+},
+"481785": {
+"class": "necromancer",
+"name": "Sever"
+},
+"484661": {
+"class": "necromancer",
+"name": "Hemorrhage"
+},
+"484668": {
+"class": "necromancer",
+"name": "Blood Orb Pickup"
+},
+"485193": {
+"class": "necromancer",
+"name": "Skeleton Mage Shadow Attack"
+},
+"493195": {
+"class": "necromancer",
+"name": "Iron Maiden"
+},
+"493422": {
+"class": "necromancer",
+"name": "Blood Mist"
+},
+"493453": {
+"class": "necromancer",
+"name": "Bone Prison"
+},
+"493622": {
+"class": "necromancer",
+"name": "Bone Storm"
+},
+"493644": {
+"class": "necromancer",
+"name": "Army Of The Dead"
+},
+"495560": {
+"class": "necromancer",
+"name": "Talent Summoning T1 N1"
+},
+"495561": {
+"class": "necromancer",
+"name": "Talent Summoning T1 N2"
+},
+"495562": {
+"class": "necromancer",
+"name": "Talent Summoning T2 N1"
+},
+"495563": {
+"class": "necromancer",
+"name": "Talent Summoning T2 N2"
+},
+"495564": {
+"class": "necromancer",
+"name": "Talent Caster T3 N1"
+},
+"495565": {
+"class": "necromancer",
+"name": "Talent Caster T3 N2"
+},
+"495568": {
+"class": "necromancer",
+"name": "Talent Caster T4 N1"
+},
+"495569": {
+"class": "necromancer",
+"name": "Talent Caster T4 N2"
+},
+"495570": {
+"class": "necromancer",
+"name": "Talent Summoning T5 N1"
+},
+"495571": {
+"class": "necromancer",
+"name": "Talent Summoning T5 N2"
+},
+"495572": {
+"class": "necromancer",
+"name": "Talent Caster T1 N1"
+},
+"495573": {
+"class": "necromancer",
+"name": "Talent Caster T1 N2"
+},
+"495574": {
+"class": "necromancer",
+"name": "Talent Caster T2 N1"
+},
+"495575": {
+"class": "necromancer",
+"name": "Talent Summoning T3 N1"
+},
+"495576": {
+"class": "necromancer",
+"name": "Talent Summoning T4 N1"
+},
+"495577": {
+"class": "necromancer",
+"name": "Talent Caster T5 N1"
+},
+"495578": {
+"class": "necromancer",
+"name": "Talent Caster T2 N2"
+},
+"495579": {
+"class": "necromancer",
+"name": "Talent Summoning T3 N2"
+},
+"495580": {
+"class": "necromancer",
+"name": "Talent Summoning T4 N2"
+},
+"495581": {
+"class": "necromancer",
+"name": "Talent Caster T5 N2"
+},
+"495653": {
+"class": "necromancer",
+"name": "Bone Spirit"
+},
+"496289": {
+"class": "necromancer",
+"name": "Spawn Blood Orb"
+},
+"496774": {
+"class": "necromancer",
+"name": "Skeleton Warrior Scythe Attack"
+},
+"496951": {
+"class": "necromancer",
+"name": "Skeleton Warrior Scythe Command"
+},
+"497193": {
+"class": "necromancer",
+"name": "Armyofthe Dead"
+},
+"499281": {
+"class": "necromancer",
+"name": "Bone Storm"
+},
+"500962": {
+"class": "necromancer",
+"name": "Bone Splinters"
+},
+"501629": {
+"class": "necromancer",
+"name": "Blood Lance"
+},
+"503368": {
+"class": "necromancer",
+"name": "Talent Summoning T4 N3"
+},
+"503508": {
+"class": "necromancer",
+"name": "Talent Caster T4 N3"
+},
+"508191": {
+"class": "sorcerer",
+"name": "Enchantment Hydra"
+},
+"508225": {
+"class": "sorcerer",
+"name": "Enchantment Charged Bolt"
+},
+"510270": {
+"class": "rogue",
+"name": "Talent Discipline T2 N3"
+},
+"511303": {
+"class": "sorcerer",
+"name": "Enchantment Meteor"
+},
+"511317": {
+"class": "sorcerer",
+"name": "Enchantment Blizzard"
+},
+"511425": {
+"class": "sorcerer",
+"name": "Enchantment Firewall"
+},
+"511647": {
+"class": "sorcerer",
+"name": "Crackling Energy Pickup"
+},
+"511650": {
+"class": "sorcerer",
+"name": "Crackling Energy Spawn"
+},
+"511819": {
+"class": "sorcerer",
+"name": "Enchantment Lightning Spear"
+},
+"511843": {
+"class": "sorcerer",
+"name": "Enchantment Arc Lash"
+},
+"512222": {
+"class": "barbarian",
+"name": "Iron Skin"
+},
+"514030": {
+"class": "sorcerer",
+"name": "Ball Lightning"
+},
+"515396": {
+"class": "sorcerer",
+"name": "Enchantment Fire Ball"
+},
+"515786": {
+"class": "sorcerer",
+"name": "Enchantment Ice Shards"
+},
+"516410": {
+"class": "sorcerer",
+"name": "Enchantment Incinerate"
+},
+"516547": {
+"class": "sorcerer",
+"name": "Enchantment Teleport"
+},
+"516916": {
+"class": "sorcerer",
+"name": "Enchantment Ball Lightning"
+},
+"517011": {
+"class": "sorcerer",
+"name": "Enchantment Firebolt"
+},
+"517021": {
+"class": "sorcerer",
+"name": "Enchantment Frostbolt"
+},
+"517022": {
+"class": "sorcerer",
+"name": "Enchantment Flame Shield"
+},
+"517310": {
+"class": "sorcerer",
+"name": "Enchantment Frost Nova"
+},
+"517417": {
+"class": "sorcerer",
+"name": "Unstable Currents"
+},
+"517691": {
+"class": "sorcerer",
+"name": "Enchantment Frozen Orb"
+},
+"517718": {
+"class": "sorcerer",
+"name": "Enchantment Chain Lightning"
+},
+"518471": {
+"class": "sorcerer",
+"name": "Enchantment Ice Armor"
+},
+"518936": {
+"class": "sorcerer",
+"name": "Enchantment Ice Blades"
+},
+"518949": {
+"class": "sorcerer",
+"name": "Enchantment Spark"
+},
+"543387": {
+"class": "druid",
+"name": "Earth Spike"
+},
+"548399": {
+"class": "druid",
+"name": "Lightning Storm"
+},
+"549564": {
+"class": "rogue",
+"name": "Blade Shift Passability"
+},
+"566517": {
+"class": "druid",
+"name": "Blood Howl"
+},
+"588207": {
+"class": "necromancer",
+"name": "Talent Playstyle T1 N1"
+},
+"588208": {
+"class": "necromancer",
+"name": "Talent Playstyle T1 N2"
+},
+"590096": {
+"class": "rogue",
+"name": "Talent Evade T1 N1"
+},
+"590097": {
+"class": "rogue",
+"name": "Talent Evade T1 N2"
+},
+"590098": {
+"class": "rogue",
+"name": "Talent Evade T1 N3"
+},
+"592163": {
+"class": "necromancer",
+"name": "Blood Surge"
+},
+"592435": {
+"class": "necromancer",
+"name": "Blood Wave"
+},
+"602023": {
+"class": "druid",
+"name": "Passive Snake 01"
+},
+"602024": {
+"class": "druid",
+"name": "Passive Deer 01"
+},
+"602025": {
+"class": "druid",
+"name": "Passive Deer 02"
+},
+"602026": {
+"class": "druid",
+"name": "Passive Snake 03"
+},
+"602027": {
+"class": "druid",
+"name": "Passive Deer 03"
+},
+"602028": {
+"class": "druid",
+"name": "Passive Deer 04"
+},
+"602029": {
+"class": "druid",
+"name": "Passive Wolf 03"
+},
+"602030": {
+"class": "druid",
+"name": "Passive Wolf 02"
+},
+"602031": {
+"class": "druid",
+"name": "Passive Snake 02"
+},
+"602032": {
+"class": "druid",
+"name": "Passive Wolf 01"
+},
+"602033": {
+"class": "druid",
+"name": "Passive Snake 04"
+},
+"602034": {
+"class": "druid",
+"name": "Passive Wolf 04"
+},
+"603603": {
+"class": "barbarian",
+"name": "Talent Berserker T2 N4"
+},
+"625157": {
+"class": "necromancer",
+"name": "Skeleton Priest Blood Command"
+},
+"625158": {
+"class": "necromancer",
+"name": "Skeleton Priest Decrepify Command"
+},
+"625160": {
+"class": "necromancer",
+"name": "Skeleton Priest Frailty Command"
+},
+"658216": {
+"class": "necromancer",
+"name": "Blood Wave"
+},
+"662689": {
+"class": "necromancer",
+"name": "Golem Bone Attack"
+},
+"668521": {
+"class": "necromancer",
+"name": "Golem Iron Active Slam"
+},
+"687105": {
+"class": "barbarian",
+"name": "Weapon Expertise 1 H Axe"
+},
+"687645": {
+"class": "barbarian",
+"name": "Weapon Expertise 1 H Mace"
+},
+"687646": {
+"class": "barbarian",
+"name": "Weapon Expertise 1 H Sword"
+},
+"687648": {
+"class": "barbarian",
+"name": "Weapon Expertise 2 H Axe"
+},
+"687651": {
+"class": "barbarian",
+"name": "Weapon Expertise 2 H Mace"
+},
+"687667": {
+"class": "barbarian",
+"name": "Weapon Expertise 2 H Polearm"
+},
+"687668": {
+"class": "barbarian",
+"name": "Weapon Expertise 2 H Sword"
+},
+"695456": {
+"class": "barbarian",
+"name": "Callofthe Ancients Bash"
+},
+"695469": {
+"class": "barbarian",
+"name": "Callofthe Ancients Upheaval"
+},
+"702523": {
+"class": "barbarian",
+"name": "Iron Maelstrom Attack 2"
+},
+"702524": {
+"class": "barbarian",
+"name": "Iron Maelstrom Attack 3"
+},
+"706563": {
+"class": "necromancer",
+"name": "Golem Iron Attack"
+},
+"748825": {
+"class": "druid",
+"name": "Talent Hybrid T5 N2"
+},
+"777009": {
+"class": "rogue",
+"name": "Talent Discipline T4 N3"
+},
+"777505": {
+"class": "rogue",
+"name": "Talent Discipline T3 N4"
+},
+"786381": {
+"class": "rogue",
+"name": "Dark Shroud"
+},
+"786834": {
+"class": "rogue",
+"name": "Talent Discipline T5 N3"
+},
+"794965": {
+"class": "rogue",
+"name": "Concealment"
+},
+"804808": {
+"class": "sorcerer",
+"name": "Hydra Spawn"
+},
+"852468": {
+"class": "druid",
+"name": "Werewolf Pet Attack"
+},
+"852501": {
+"class": "druid",
+"name": "Werewolf Pet Special Attack"
+},
+"893531": {
+"class": "druid",
+"name": "Wolf Lightning Teleport"
+},
+"897743": {
+"class": "druid",
+"name": "Wolf Lightning Howl"
+},
+"915150": {
+"class": "necromancer",
+"name": "Decrepify"
+},
+"915152": {
+"class": "necromancer",
+"name": "Iron Maiden"
+},
+"934016": {
+"class": "necromancer",
+"name": "Skeleton Warrior Scythe Two Hand Attack"
+},
+"937366": {
+"class": "necromancer",
+"name": "Golem Blood Active"
+},
+"943744": {
+"class": "necromancer",
+"name": "Talent Skeleton Warrior"
+},
+"943745": {
+"class": "necromancer",
+"name": "Talent Skeleton Mage"
+},
+"943748": {
+"class": "necromancer",
+"name": "Talent Golem"
+},
+"943830": {
+"class": "necromancer",
+"name": "Skeleton Warrior Scythe Double Strike Attack"
+},
+"959728": {
+"class": "sorcerer",
+"name": "Teleport (Enchanted)"
+},
+"964631": {
+"class": "barbarian",
+"name": "Steel Grasp"
+},
+"976829": {
+"class": "necromancer",
+"name": "Golem Iron Attack Enhanced"
+}
+}

@@ -515,10 +515,12 @@
       </div>
       <div class="form-section-body">
         <div class="add-spell-form">
-          <input id="dAddSpellId" type="text" placeholder="spell id (number)" style="width:160px">
+          <input id="dAddSpellId" type="text"
+                 placeholder="spell name or id (e.g. Fireball, 165023)"
+                 autocomplete="off" style="width:280px">
           <button id="dAddSpellBtn" class="primary">+ Add spell</button>
           <span style="color:var(--muted);font-size:11px;flex:1">
-            Plugin populates display names at runtime; the editor only stores the id.
+            Names resolved from the bundled D4 power dump.
           </span>
         </div>
         <div class="spell-list" id="dSpellList" style="margin-top:10px"></div>
@@ -615,6 +617,10 @@ function showApp() {
   if (activePanel === 'users' && session.role !== 'superadmin') {
     showPanel('profiles');
   }
+  // Fire-and-forget the spell-name fetch so it's ready by the time the
+  // first profile drawer opens.  No await -- profile listing doesn't
+  // depend on it.
+  loadSpellNames();
   refresh();
 }
 function logout() {
@@ -996,6 +1002,56 @@ const VIRTUAL_EVADE_ID = 999999999;
 // the JSON pane is rendered from it on demand.  null = nothing loaded.
 let dData = null;
 
+// id -> { name, class } lookup, fetched once after login from
+// /admin/api/spell_names.  Lets the editor show real spell names
+// instead of bare numeric ids.  null until loaded; missing ids fall
+// back to "spell #<id>".
+let SPELL_NAMES   = null;
+let SPELL_OPTIONS = [];   // datalist entries: { value: id, label: "Name (id)" }
+
+async function loadSpellNames() {
+  if (SPELL_NAMES) return SPELL_NAMES;
+  try {
+    const r = await fetch('/admin/api/spell_names');
+    if (r.ok) {
+      SPELL_NAMES = await r.json();
+      SPELL_OPTIONS = Object.entries(SPELL_NAMES).map(([id, info]) => ({
+        id:    Number(id),
+        name:  info.name,
+        klass: info.class || '',
+      })).sort((a, b) => a.name.localeCompare(b.name));
+      // Build the datalist used by the Add Spell typeahead.
+      const dl = document.createElement('datalist');
+      dl.id = 'spellNameList';
+      SPELL_OPTIONS.forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = String(o.id);
+        opt.label = `${o.name}  (${o.klass})`;
+        opt.textContent = `${o.name}  (${o.klass})`;
+        dl.appendChild(opt);
+      });
+      document.body.appendChild(dl);
+      // Attach the datalist to the input.
+      const inp = $('dAddSpellId');
+      if (inp) inp.setAttribute('list', 'spellNameList');
+    }
+  } catch (e) {
+    console.warn('spell_names load failed:', e);
+  }
+  return SPELL_NAMES || {};
+}
+
+function spellInfo(sid) {
+  if (sid === VIRTUAL_EVADE_ID) {
+    return { name: 'Virtual Evade', klass: '' };
+  }
+  if (SPELL_NAMES && SPELL_NAMES[String(sid)]) {
+    const r = SPELL_NAMES[String(sid)];
+    return { name: r.name, klass: r.class || '' };
+  }
+  return null;
+}
+
 // Default values for newly-added spells (matches spell_config.get_elements).
 function defaultSpellCfg() {
   return {
@@ -1096,13 +1152,15 @@ function gridInput(label, type, val, onChange, opts) {
   return [lab, inp];
 }
 
-// Pretty-format a spell id for display.  No name resolution available
-// in the browser (the plugin reads it from the host's spell DB at
-// runtime); we just show the numeric id.
+// Pretty-format a spell id for display.  Uses SPELL_NAMES (loaded
+// once after login from /admin/api/spell_names); falls back to the
+// numeric id when the lookup is missing.
 function spellHeader(sid, cfg) {
   const en  = cfg.enabled ? '☑' : '☐';
   const pri = cfg.priority != null ? cfg.priority : '?';
-  return { en, pri, label: sid === VIRTUAL_EVADE_ID ? 'Virtual Evade' : ('spell #' + sid) };
+  const info = spellInfo(sid);
+  const label = info ? info.name : ('spell #' + sid);
+  return { en, pri, label, klass: info ? info.klass : '' };
 }
 
 function renderGlobalGrid() {
@@ -1151,10 +1209,12 @@ function renderSpellCard(sid) {
   // ── header ──
   const head = document.createElement('div');
   head.className = 'spell-head';
+  const klassTag = hdr.klass ? `<span style="color:var(--muted);font-size:11px;text-transform:capitalize">${hdr.klass}</span>` : '';
   head.innerHTML = `
     <span class="chev">▶</span>
     <span class="id-badge">${sid === VIRTUAL_EVADE_ID ? 'evade' : sid}</span>
-    <span class="name">${hdr.label}</span>
+    <span class="name">${escapeHtml(hdr.label)}</span>
+    ${klassTag}
     <span class="pri-pill">P${hdr.pri}</span>
     <span style="color:var(--muted);font-size:11px">${cfg.enabled ? '' : 'disabled'}</span>
   `;
@@ -1333,15 +1393,43 @@ $('dFormPane').addEventListener('click', (e) => {
   if (head) head.parentElement.classList.toggle('open');
 });
 
-// Add-spell handler
-$('dAddSpellBtn').addEventListener('click', () => {
-  const v = $('dAddSpellId').value.trim();
-  const sid = parseInt(v, 10);
-  if (!isFinite(sid) || sid <= 0) { toast('Enter a positive spell id.', 'err'); return; }
-  if (dData.spells[String(sid)]) { toast(`Spell ${sid} is already in the profile.`, 'err'); return; }
+// Add-spell handler.  Accepts either a numeric id OR a spell name --
+// the datalist on the input lets the user start typing "Fireball"
+// and pick it; we then resolve to the id.  Submits on Enter too.
+function _resolveSpellInput(raw) {
+  const txt = (raw || '').trim();
+  if (!txt) return null;
+  // Numeric id?
+  const n = parseInt(txt, 10);
+  if (isFinite(n) && n > 0 && String(n) === txt.replace(/\s.*$/, '')) {
+    return n;
+  }
+  // Name match (case-insensitive).  If the user picked a datalist
+  // entry the value will be the id string -- handled above.
+  if (SPELL_OPTIONS.length > 0) {
+    const lower = txt.toLowerCase();
+    const exact = SPELL_OPTIONS.find(o => o.name.toLowerCase() === lower);
+    if (exact) return exact.id;
+    const partial = SPELL_OPTIONS.find(o => o.name.toLowerCase().includes(lower));
+    if (partial) return partial.id;
+  }
+  return null;
+}
+function _addSpellFromInput() {
+  const sid = _resolveSpellInput($('dAddSpellId').value);
+  if (sid == null) { toast('Enter a spell id or name (e.g. "Fireball").', 'err'); return; }
+  if (dData.spells[String(sid)]) {
+    const info = spellInfo(sid);
+    toast(`${info ? info.name : ('Spell ' + sid)} is already in the profile.`, 'err');
+    return;
+  }
   dData.spells[String(sid)] = defaultSpellCfg();
   $('dAddSpellId').value = '';
   renderSpellList();
+}
+$('dAddSpellBtn').addEventListener('click', _addSpellFromInput);
+$('dAddSpellId').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); _addSpellFromInput(); }
 });
 
 // ─── Tab switching (Form ↔ Raw JSON) ────────────────────────────────────

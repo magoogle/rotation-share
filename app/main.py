@@ -511,6 +511,27 @@ def admin_me(
             'user_id': p['user_id']}
 
 
+# ── Spell-name reference data ──────────────────────────────────────────────
+# Static id→name map shipped alongside the app.  Built once via
+# scripts/build_spell_names.py from the user's curated list + the
+# d4data-master Power dump.  Served as plain JSON; no auth required --
+# it's reference data the admin UI overlays on profile editing.
+
+_SPELL_NAMES_PATH = Path(__file__).parent / 'static' / 'spell_names.json'
+
+
+@app.get('/admin/api/spell_names')
+def admin_spell_names():
+    try:
+        return JSONResponse(content=json.loads(
+            _SPELL_NAMES_PATH.read_text(encoding='utf-8')
+        ))
+    except OSError:
+        return _err('spell_names.json missing on the server', 500)
+    except Exception as e:
+        return _err(f'spell_names.json: {e}', 500)
+
+
 # ── Admin: profiles ────────────────────────────────────────────────────────
 
 @app.get('/admin/api/profiles')
